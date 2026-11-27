@@ -67,25 +67,27 @@ jobs:
 
       - name: Fix Kotlin stdlib conflict & Build Debug APK
         run: |
-          python3 -c '
+          cat << 'EOF' > fix_kotlin.py
           p = "android/build.gradle"
-          with open(p, "r") as f:
+          with open(p, "r", encoding="utf-8") as f:
               c = f.read()
+
           rule = """
-allprojects {
-    configurations.all {
-        resolutionStrategy.eachDependency { details ->
-            if (details.requested.group == "org.jetbrains.kotlin" && details.requested.name.startsWith("kotlin-stdlib")) {
-                details.useVersion "1.8.22"
-            }
-        }
-    }
-}
-"""
+          allprojects {
+              configurations.all {
+                  resolutionStrategy.eachDependency { details ->
+                      if (details.requested.group == "org.jetbrains.kotlin" && details.requested.name.startsWith("kotlin-stdlib")) {
+                          details.useVersion "1.8.22"
+                      }
+                  }
+              }
+          }
+          """
           if "resolutionStrategy.eachDependency" not in c:
-              with open(p, "w") as f:
+              with open(p, "w", encoding="utf-8") as f:
                   f.write(c + "\n" + rule)
-          '
+          EOF
+          python3 fix_kotlin.py
           cd android
           chmod +x gradlew
           ./gradlew assembleDebug
