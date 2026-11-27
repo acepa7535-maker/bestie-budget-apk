@@ -7,6 +7,8 @@
   <style>
     :root {
       --bg-chat: #efeae2;
+      --wallpaper-pattern: radial-gradient(rgba(0, 0, 0, 0.045) 1px, transparent 0);
+      --wallpaper-size: 18px 18px;
       --header-bg: #075e54;
       --header-deep: #054c44;
       --accent: #00a884;
@@ -15,10 +17,92 @@
       --text-main: #111b21;
       --text-muted: #54656f;
       --border-soft: #e2ddd5;
-      --danger: #c62828;
-      --warn: #b26a00;
-      --ok: #1b5e20;
+      --chip-bg: #ffffff;
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-scale: 1;
     }
+
+    body[data-theme="butter-brown"] {
+      --bg-chat: #f7f1e3;
+      --header-bg: #6b4423;
+      --header-deep: #523218;
+      --accent: #c48b28;
+      --bubble-out: #f6e7b8;
+      --bubble-in: #fffdf8;
+      --text-main: #2b1d12;
+      --text-muted: #6e5540;
+      --border-soft: #e5d8be;
+      --chip-bg: #fffdf8;
+    }
+
+    body[data-theme="sage-cream"] {
+      --bg-chat: #eef2ec;
+      --header-bg: #3b6e5c;
+      --header-deep: #2c5446;
+      --accent: #4f9d82;
+      --bubble-out: #d6ebe2;
+      --bubble-in: #ffffff;
+      --text-main: #182520;
+      --text-muted: #526860;
+      --border-soft: #d7e0da;
+      --chip-bg: #ffffff;
+    }
+
+    body[data-theme="berry-soft"] {
+      --bg-chat: #f7eef2;
+      --header-bg: #7a2e4d;
+      --header-deep: #5d2139;
+      --accent: #b84a76;
+      --bubble-out: #f8dce8;
+      --bubble-in: #ffffff;
+      --text-main: #29141d;
+      --text-muted: #6e4a59;
+      --border-soft: #ead6df;
+      --chip-bg: #ffffff;
+    }
+
+    body[data-wallpaper="polos"] {
+      --wallpaper-pattern: none;
+    }
+
+    body[data-wallpaper="titik"] {
+      --wallpaper-pattern: radial-gradient(rgba(0, 0, 0, 0.09) 1.25px, transparent 0);
+      --wallpaper-size: 16px 16px;
+    }
+
+    body[data-wallpaper="kotak"] {
+      --wallpaper-pattern:
+        linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+      --wallpaper-size: 20px 20px;
+    }
+
+    body[data-wallpaper="sunset"] {
+      --bg-chat: #fde8d7;
+      --wallpaper-pattern: linear-gradient(160deg, rgba(255, 224, 178, 0.65), rgba(248, 187, 208, 0.45));
+      --wallpaper-size: 100% 100%;
+    }
+
+    body[data-font="sans"] {
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body[data-font="serif"] {
+      --font-family: Georgia, "Times New Roman", serif;
+    }
+
+    body[data-font="mono"] {
+      --font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    body[data-font="rounded"] {
+      --font-family: "Trebuchet MS", "Segoe UI", Rounded, sans-serif;
+    }
+
+    body[data-size="kecil"] { --font-scale: 0.9; }
+    body[data-size="normal"] { --font-scale: 1; }
+    body[data-size="besar"] { --font-scale: 1.14; }
+    body[data-size="ekstra"] { --font-scale: 1.28; }
 
     * {
       box-sizing: border-box;
@@ -30,7 +114,8 @@
       padding: 0;
       height: 100%;
       width: 100%;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: var(--font-family);
+      font-size: calc(14px * var(--font-scale));
       background: var(--bg-chat);
       color: var(--text-main);
       overflow: hidden;
@@ -42,11 +127,12 @@
       height: 100dvh;
       max-width: 640px;
       margin: 0 auto;
-      background: var(--bg-chat);
+      background-color: var(--bg-chat);
+      background-image: var(--wallpaper-pattern);
+      background-size: var(--wallpaper-size);
       box-shadow: 0 0 24px rgba(0,0,0,0.08);
     }
 
-    /* Header ala WA */
     .wa-header {
       background: var(--header-bg);
       color: #fff;
@@ -70,22 +156,20 @@
       width: 38px;
       height: 38px;
       border-radius: 50%;
-      background: #128c7e;
+      background: rgba(255,255,255,0.2);
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 700;
-      font-size: 15px;
+      font-size: calc(14px * var(--font-scale));
       flex-shrink: 0;
-      border: 1.5px solid rgba(255,255,255,0.28);
+      border: 1.5px solid rgba(255,255,255,0.35);
     }
 
-    .wa-title-wrap {
-      min-width: 0;
-    }
+    .wa-title-wrap { min-width: 0; }
 
     .wa-title {
-      font-size: 15px;
+      font-size: calc(15px * var(--font-scale));
       font-weight: 700;
       line-height: 1.2;
       white-space: nowrap;
@@ -94,8 +178,8 @@
     }
 
     .wa-sub {
-      font-size: 11.5px;
-      color: rgba(255,255,255,0.88);
+      font-size: calc(11px * var(--font-scale));
+      color: rgba(255,255,255,0.9);
       line-height: 1.25;
       white-space: nowrap;
       overflow: hidden;
@@ -104,53 +188,50 @@
 
     .header-actions {
       display: flex;
-      gap: 6px;
+      gap: 5px;
       flex-shrink: 0;
     }
 
     .icon-btn {
-      background: rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.16);
       color: #fff;
       border: none;
-      border-radius: 8px;
-      padding: 6px 9px;
-      font-size: 12px;
+      border-radius: 999px;
+      padding: 6px 8px;
+      font-size: calc(11px * var(--font-scale));
+      font-family: var(--font-family);
       font-weight: 600;
       cursor: pointer;
     }
 
-    .icon-btn:active {
-      background: rgba(255,255,255,0.26);
-    }
+    .icon-btn:active { background: rgba(255,255,255,0.3); }
 
-    /* Ringkasan saldo ringkas di bawah header */
     .summary-strip {
       background: var(--header-deep);
       color: #fff;
-      padding: 7px 12px;
+      padding: 7px 10px;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 6px;
-      font-size: 11px;
       flex-shrink: 0;
     }
 
     .sum-box {
-      background: rgba(255,255,255,0.1);
-      border-radius: 7px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 10px;
       padding: 5px 6px;
       text-align: center;
     }
 
     .sum-label {
-      opacity: 0.85;
-      font-size: 10px;
+      opacity: 0.88;
+      font-size: calc(10px * var(--font-scale));
       display: block;
     }
 
     .sum-val {
       font-weight: 700;
-      font-size: 11.5px;
+      font-size: calc(11.5px * var(--font-scale));
       display: block;
       margin-top: 1px;
       white-space: nowrap;
@@ -158,7 +239,6 @@
       text-overflow: ellipsis;
     }
 
-    /* Banner notifikasi pintar */
     .notif-bar {
       padding: 0 10px;
       flex-shrink: 0;
@@ -167,137 +247,150 @@
     .notif-card {
       margin-top: 8px;
       padding: 8px 11px;
-      border-radius: 10px;
-      font-size: 12px;
+      border-radius: 14px;
+      font-size: calc(12px * var(--font-scale));
       line-height: 1.35;
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
       gap: 8px;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
     }
 
     .notif-warn {
       background: #fff8e1;
       border-left: 4px solid #f59e0b;
-      color: var(--warn);
+      color: #8a5300;
     }
 
     .notif-danger {
       background: #ffebee;
       border-left: 4px solid #ef4444;
-      color: var(--danger);
+      color: #b71c1c;
     }
 
     .notif-info {
       background: #e8f5e9;
       border-left: 4px solid #22c55e;
-      color: var(--ok);
+      color: #1b5e20;
     }
 
     .notif-close {
       background: transparent;
       border: none;
       font-weight: 700;
-      font-size: 14px;
+      font-size: calc(14px * var(--font-scale));
       color: inherit;
       cursor: pointer;
       padding: 0 2px;
     }
 
-    /* Area obrolan yang digulir */
     .chat-scroll {
       flex: 1;
       overflow-y: auto;
-      padding: 12px;
+      padding: 12px 14px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
       scroll-behavior: smooth;
     }
 
     .date-chip {
       align-self: center;
-      background: rgba(255,255,255,0.88);
+      background: var(--chip-bg);
       color: var(--text-muted);
-      font-size: 11px;
+      font-size: calc(11px * var(--font-scale));
       font-weight: 600;
-      padding: 4px 10px;
-      border-radius: 8px;
-      box-shadow: 0 1px 1px rgba(0,0,0,0.06);
+      padding: 4px 12px;
+      border-radius: 999px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.06);
       margin: 4px 0;
     }
 
     .bubble-row {
       display: flex;
       flex-direction: column;
-      max-width: 88%;
+      max-width: 84%;
+      position: relative;
     }
 
-    .bubble-row.out {
-      align-self: flex-end;
-    }
-
-    .bubble-row.in {
-      align-self: flex-start;
-    }
+    .bubble-row.out { align-self: flex-end; }
+    .bubble-row.in { align-self: flex-start; }
 
     .bubble {
-      padding: 8px 11px;
-      border-radius: 12px;
-      font-size: 13.5px;
-      line-height: 1.4;
-      box-shadow: 0 1px 1.5px rgba(0,0,0,0.08);
+      padding: 9px 13px;
+      border-radius: 18px;
+      font-size: calc(13.5px * var(--font-scale));
+      line-height: 1.42;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.09);
       position: relative;
       word-wrap: break-word;
     }
 
     .bubble-row.out .bubble {
       background: var(--bubble-out);
-      border-top-right-radius: 3px;
+      border-bottom-right-radius: 5px;
+    }
+
+    .bubble-row.out .bubble::after {
+      content: "";
+      position: absolute;
+      right: -6px;
+      bottom: 0;
+      width: 10px;
+      height: 12px;
+      background: var(--bubble-out);
+      clip-path: polygon(0 0, 0 100%, 100% 100%);
     }
 
     .bubble-row.in .bubble {
       background: var(--bubble-in);
-      border-top-left-radius: 3px;
+      border-bottom-left-radius: 5px;
+    }
+
+    .bubble-row.in .bubble::before {
+      content: "";
+      position: absolute;
+      left: -6px;
+      bottom: 0;
+      width: 10px;
+      height: 12px;
+      background: var(--bubble-in);
+      clip-path: polygon(100% 0, 0 100%, 100% 100%);
+    }
+
+    .bestie-label {
+      font-size: calc(11px * var(--font-scale));
+      font-weight: 700;
+      color: var(--header-bg);
+      margin-bottom: 2px;
     }
 
     .tx-meta {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       margin-top: 5px;
-      font-size: 11px;
+      font-size: calc(11px * var(--font-scale));
       color: var(--text-muted);
     }
 
     .tag {
-      padding: 2px 7px;
+      padding: 2px 8px;
       border-radius: 999px;
       font-weight: 600;
-      font-size: 10.5px;
+      font-size: calc(10.5px * var(--font-scale));
     }
 
-    .tag-pengeluaran {
-      background: #fee2e2;
-      color: #991b1b;
-    }
-
-    .tag-kas_ibu {
-      background: #fef3c7;
-      color: #92400e;
-    }
-
-    .tag-nabung {
-      background: #dcfce7;
-      color: #166534;
-    }
+    .tag-pengeluaran { background: #fee2e2; color: #991b1b; }
+    .tag-kas_ibu { background: #fef3c7; color: #92400e; }
+    .tag-nabung { background: #dcfce7; color: #166534; }
 
     .tx-amount {
       font-weight: 700;
-      font-size: 13px;
-      margin-top: 3px;
+      font-size: calc(13.5px * var(--font-scale));
+      margin-top: 4px;
     }
 
     .amt-neg { color: #b91c1c; }
@@ -305,40 +398,40 @@
 
     .bubble-actions {
       display: flex;
-      gap: 8px;
-      margin-top: 5px;
+      gap: 6px;
+      margin-top: 6px;
     }
 
     .mini-btn {
       border: none;
-      background: rgba(0,0,0,0.06);
+      background: rgba(0,0,0,0.07);
       color: var(--text-main);
-      border-radius: 6px;
-      padding: 3px 7px;
-      font-size: 10.5px;
+      font-family: var(--font-family);
+      border-radius: 999px;
+      padding: 3px 9px;
+      font-size: calc(10.5px * var(--font-scale));
       font-weight: 600;
       cursor: pointer;
     }
 
     .mini-btn.del {
       color: #b91c1c;
-      background: rgba(185,28,28,0.08);
+      background: rgba(185,28,28,0.1);
     }
 
     .time-stamp {
-      font-size: 10px;
+      font-size: calc(10px * var(--font-scale));
       color: var(--text-muted);
       text-align: right;
-      margin-top: 3px;
+      margin-top: 4px;
     }
 
-    /* Quick chips di atas input */
     .chips-bar {
       display: flex;
       gap: 6px;
       overflow-x: auto;
-      padding: 6px 10px;
-      background: #f7f5f0;
+      padding: 7px 10px;
+      background: rgba(255,255,255,0.72);
       border-top: 1px solid var(--border-soft);
       flex-shrink: 0;
       scrollbar-width: none;
@@ -347,23 +440,18 @@
     .chips-bar::-webkit-scrollbar { display: none; }
 
     .chip {
-      background: #fff;
-      border: 1px solid #d5d0c8;
+      background: var(--chip-bg);
+      border: 1px solid var(--border-soft);
       color: var(--text-main);
+      font-family: var(--font-family);
       border-radius: 999px;
-      padding: 5px 10px;
-      font-size: 11.5px;
+      padding: 6px 11px;
+      font-size: calc(11.5px * var(--font-scale));
       white-space: nowrap;
       cursor: pointer;
       font-weight: 500;
     }
 
-    .chip:active {
-      background: #e7f8f3;
-      border-color: var(--accent);
-    }
-
-    /* Bar ketik ala WA */
     .input-bar {
       background: #f0f2f5;
       padding: 7px 8px;
@@ -376,21 +464,23 @@
     .pos-select {
       border: 1px solid #d1d5db;
       background: #fff;
-      border-radius: 18px;
-      padding: 8px 8px;
-      font-size: 11.5px;
+      font-family: var(--font-family);
+      border-radius: 999px;
+      padding: 8px 9px;
+      font-size: calc(11.5px * var(--font-scale));
       font-weight: 600;
       color: var(--text-main);
-      max-width: 96px;
+      max-width: 98px;
     }
 
     .msg-input {
       flex: 1;
       border: none;
       background: #fff;
-      border-radius: 20px;
-      padding: 9px 13px;
-      font-size: 14px;
+      font-family: var(--font-family);
+      border-radius: 999px;
+      padding: 9px 14px;
+      font-size: calc(14px * var(--font-scale));
       outline: none;
       min-width: 0;
     }
@@ -408,7 +498,6 @@
       flex-shrink: 0;
     }
 
-    /* Modal pengaturan / rekap / backup */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -425,11 +514,12 @@
       background: #fff;
       width: 100%;
       max-width: 640px;
-      max-height: 85dvh;
+      max-height: 88dvh;
       overflow-y: auto;
-      border-top-left-radius: 18px;
-      border-top-right-radius: 18px;
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
       padding: 16px;
+      font-family: var(--font-family);
     }
 
     .modal-head {
@@ -439,29 +529,72 @@
       margin-bottom: 12px;
     }
 
-    .modal-head h3 {
-      margin: 0;
-      font-size: 16px;
+    .modal-head h3 { margin: 0; font-size: calc(16px * var(--font-scale)); }
+
+    .theme-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
     }
 
-    .field {
-      margin-bottom: 10px;
+    .theme-opt {
+      border: 1.5px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 10px;
+      text-align: left;
+      background: #f8fafc;
+      font-family: var(--font-family);
+      cursor: pointer;
+      font-size: calc(12px * var(--font-scale));
+      font-weight: 600;
     }
+
+    .theme-opt.active {
+      border-color: var(--header-bg);
+      background: #f0fdf4;
+    }
+
+    .swatch-row {
+      display: flex;
+      gap: 5px;
+      margin-top: 6px;
+    }
+
+    .swatch {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 1px solid rgba(0,0,0,0.15);
+    }
+
+    .field { margin-bottom: 10px; }
 
     .field label {
       display: block;
-      font-size: 12px;
+      font-size: calc(12px * var(--font-scale));
       font-weight: 600;
       margin-bottom: 4px;
       color: var(--text-muted);
     }
 
-    .field input, .field textarea {
+    .field input, .field textarea, .field select {
       width: 100%;
       border: 1px solid #cbd5e1;
-      border-radius: 8px;
+      border-radius: 10px;
       padding: 8px 10px;
-      font-size: 13px;
+      font-size: calc(13px * var(--font-scale));
+      font-family: var(--font-family);
+      background: #fff;
+    }
+
+    .check-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      font-size: calc(13px * var(--font-scale));
+      font-weight: 600;
     }
 
     .btn-row {
@@ -475,9 +608,10 @@
       background: var(--header-bg);
       color: #fff;
       border: none;
-      border-radius: 8px;
+      font-family: var(--font-family);
+      border-radius: 10px;
       padding: 9px 14px;
-      font-size: 13px;
+      font-size: calc(13px * var(--font-scale));
       font-weight: 600;
       cursor: pointer;
     }
@@ -486,9 +620,10 @@
       background: #e2e8f0;
       color: var(--text-main);
       border: none;
-      border-radius: 8px;
+      font-family: var(--font-family);
+      border-radius: 10px;
       padding: 9px 12px;
-      font-size: 12.5px;
+      font-size: calc(12.5px * var(--font-scale));
       font-weight: 600;
       cursor: pointer;
     }
@@ -496,9 +631,9 @@
     .rekap-box {
       background: #f8fafc;
       border: 1px solid #e2e8f0;
-      border-radius: 10px;
+      border-radius: 12px;
       padding: 10px;
-      font-size: 12.5px;
+      font-size: calc(12.5px * var(--font-scale));
       margin-bottom: 12px;
     }
 
@@ -510,27 +645,33 @@
     }
 
     .rekap-line:last-child { border-bottom: none; }
+
+    .hint-small {
+      font-size: calc(11px * var(--font-scale));
+      color: var(--text-muted);
+      line-height: 1.35;
+      margin-top: 4px;
+    }
   </style>
 </head>
-<body>
+<body data-theme="wa-green" data-wallpaper="titik" data-font="sans" data-size="normal">
   <div class="app">
-    <!-- Header ala WA -->
     <div class="wa-header">
       <div class="wa-header-left">
         <div class="avatar">BB</div>
         <div class="wa-title-wrap">
           <div class="wa-title">Bestie Budget</div>
-          <div class="wa-sub" id="subStatus">Siap catat • Offline & Online</div>
+          <div class="wa-sub" id="subStatus">Siap catat • Chat & Notif</div>
         </div>
       </div>
       <div class="header-actions">
+        <button class="icon-btn" onclick="openModal('tema')">Tampilan</button>
         <button class="icon-btn" onclick="openModal('rekap')">Rekap</button>
         <button class="icon-btn" onclick="openModal('budget')">Budget</button>
         <button class="icon-btn" onclick="openModal('data')">Data</button>
       </div>
     </div>
 
-    <!-- Strip Angka Single Source of Truth -->
     <div class="summary-strip">
       <div class="sum-box">
         <span class="sum-label">Sisa Saldo</span>
@@ -550,23 +691,19 @@
       </div>
     </div>
 
-    <!-- Area Notifikasi Pintar -->
     <div class="notif-bar" id="notifBar"></div>
 
-    <!-- Ruang Chat yang Digulir -->
     <div class="chat-scroll" id="chatScroll"></div>
 
-    <!-- Quick Chips -->
     <div class="chips-bar">
       <button class="chip" onclick="quickFill('bensin 10000', 'pengeluaran')">⛽ Bensin 10rb</button>
       <button class="chip" onclick="quickFill('jajan 15000', 'pengeluaran')">🍢 Jajan 15rb</button>
       <button class="chip" onclick="quickFill('parkir motor 2000', 'pengeluaran')">🅿️ Parkir 2rb</button>
       <button class="chip" onclick="quickFill('kas ibu 20000', 'kas_ibu')">🏠 Kas/Ibu 20rb</button>
       <button class="chip" onclick="quickFill('nabung 10000', 'nabung')">🐷 Nabung 10rb</button>
-      <button class="chip" onclick="openModal('budget')">📅 Atur Modal</button>
+      <button class="chip" onclick="triggerManualNotifCheck()">🔔 Cek Notif</button>
     </div>
 
-    <!-- Bar Ketik Bawah -->
     <form class="input-bar" id="chatForm" onsubmit="handleSend(event)">
       <select class="pos-select" id="posSelect" title="Pilih jenis pos">
         <option value="pengeluaran">Pengeluaran</option>
@@ -584,13 +721,30 @@
     </form>
   </div>
 
-  <!-- Modal -->
   <div class="modal-backdrop" id="modalBackdrop" onclick="closeModalBackdrop(event)">
     <div class="modal-sheet" id="modalSheet"></div>
   </div>
 
   <script>
-    const STORAGE_KEY = "bestie_budget_chat_v1";
+    const STORAGE_KEY = "bestie_budget_chat_v5";
+
+    const TONE_PRESETS = {
+      santai: {
+        near80: "Sisa budgetmu hari ini {sisa_hari}. Untuk besok kira-kira {jatah_besok} ya.",
+        overLimit: "Jatah hari ini lewat {selisih}. Sisa budgetmu hari ini {sisa_hari}, buat besok estimasinya {jatah_besok} ya.",
+        noSpendEvening: "Belum ada pengeluaran hari ini. Sisa budgetmu hari ini {sisa_hari}, untuk besok kira-kira {jatah_besok} ya."
+      },
+      tegas: {
+        near80: "Peringatan 80%+: sisa budget hari ini {sisa_hari}. Estimasi besok {jatah_besok}.",
+        overLimit: "Lewat batas {selisih}! Sisa budget hari ini {sisa_hari}, jatah estimasi besok {jatah_besok}.",
+        noSpendEvening: "Pengeluaran hari ini masih Rp0. Sisa budget hari ini {sisa_hari}, estimasi besok {jatah_besok}."
+      },
+      ringkas: {
+        near80: "Sisa hari ini {sisa_hari} • Besok {jatah_besok}.",
+        overLimit: "Lewat {selisih} • Sisa hari ini {sisa_hari} • Besok {jatah_besok}.",
+        noSpendEvening: "Hari ini Rp0 • Sisa hari ini {sisa_hari} • Besok {jatah_besok}."
+      }
+    };
 
     function todayStr() {
       const d = new Date();
@@ -607,20 +761,25 @@
 
     function formatRupiah(num) {
       const n = Number(num) || 0;
-      if (n < 0) {
-        return `-Rp${Math.abs(n).toLocaleString("id-ID")}`;
-      }
+      if (n < 0) return `-Rp${Math.abs(n).toLocaleString("id-ID")}`;
       return `Rp${n.toLocaleString("id-ID")}`;
     }
 
     function defaultState() {
       return {
+        theme: "wa-green",
+        wallpaper: "titik",
+        fontFamily: "sans",
+        fontSize: "normal",
         modalAwal: 100000,
         jumlahHari: 5,
-        tanggalMulai: todayStr(),
         aiEndpoint: "",
         aiKey: "",
-        dismissedNotifDate: "",
+        notifTone: "santai",
+        notifVoiceEnabled: true,
+        notifTemplates: { ...TONE_PRESETS.santai },
+        dismissedBannerKey: "",
+        sentNotifKeys: [],
         transactions: [
           {
             id: "tx-init-1",
@@ -630,7 +789,8 @@
             kategori: "jajan",
             keterangan: "nyeblak",
             nominal: 15000,
-            rawText: "jajan nyeblak 15000"
+            rawText: "jajan nyeblak 15000",
+            replyText: "Oke, nyeblak Rp15.000 masuk pos Pengeluaran (jajan). Jatah harian aman buat lanjut!"
           }
         ]
       };
@@ -643,7 +803,14 @@
         const raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) return defaultState();
         const parsed = JSON.parse(raw);
-        return { ...defaultState(), ...parsed };
+        return {
+          ...defaultState(),
+          ...parsed,
+          notifTemplates: {
+            ...TONE_PRESETS.santai,
+            ...(parsed.notifTemplates || {})
+          }
+        };
       } catch (e) {
         return defaultState();
       }
@@ -653,18 +820,88 @@
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     }
 
-    // Parse nominal seperti "15rb", "15k", "15.000", "15000"
+    function applyAppearance() {
+      document.body.setAttribute("data-theme", state.theme || "wa-green");
+      document.body.setAttribute("data-wallpaper", state.wallpaper || "titik");
+      document.body.setAttribute("data-font", state.fontFamily || "sans");
+      document.body.setAttribute("data-size", state.fontSize || "normal");
+    }
+
+    function getLocalNotifPlugin() {
+      return window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.LocalNotifications
+        ? window.Capacitor.Plugins.LocalNotifications
+        : null;
+    }
+
+    async function requestNotifPermissionIfNeeded() {
+      const plugin = getLocalNotifPlugin();
+      try {
+        if (plugin && typeof plugin.requestPermissions === "function") {
+          await plugin.requestPermissions();
+        } else if ("Notification" in window && Notification.permission === "default") {
+          await Notification.requestPermission();
+        }
+      } catch (e) {}
+    }
+
+    function speakIfEnabled(text) {
+      if (!state.notifVoiceEnabled) return;
+      try {
+        if ("speechSynthesis" in window) {
+          window.speechSynthesis.cancel();
+          const utter = new SpeechSynthesisUtterance(text);
+          utter.lang = "id-ID";
+          utter.rate = 1.0;
+          window.speechSynthesis.speak(utter);
+        }
+      } catch (e) {}
+    }
+
+    async function pushSystemNotification(notifId, title, body, shouldSpeak = true) {
+      const plugin = getLocalNotifPlugin();
+      let delivered = false;
+
+      try {
+        if (plugin && typeof plugin.schedule === "function") {
+          await plugin.schedule({
+            notifications: [
+              {
+                id: notifId,
+                title,
+                body,
+                schedule: { at: new Date(Date.now() + 300) }
+              }
+            ]
+          });
+          delivered = true;
+        }
+      } catch (e) {}
+
+      if (!delivered) {
+        try {
+          if ("Notification" in window && Notification.permission === "granted") {
+            new Notification(title, { body });
+            delivered = true;
+          }
+        } catch (e) {}
+      }
+
+      if (shouldSpeak) {
+        speakIfEnabled(body);
+      }
+
+      return delivered;
+    }
+
     function parseNominal(text) {
       const clean = text.toLowerCase().replace(/rp/g, "").trim();
       const rbMatch = clean.match(/(\d+(?:[.,]\d+)?)\s*(rb|ribu|k)\b/);
       if (rbMatch) {
-        const val = parseFloat(rbMatch[1].replace(",", "."));
-        return Math.round(val * 1000);
+        return Math.round(parseFloat(rbMatch[1].replace(",", ".")) * 1000);
       }
       const numMatch = clean.match(/(\d{1,3}(?:[.,]\d{3})+|\d+)/);
       if (numMatch) {
-        const digitsOnly = numMatch[1].replace(/[.,]/g, "");
-        const val = parseInt(digitsOnly, 10);
+        const val = parseInt(numMatch[1].replace(/[.,]/g, ""), 10);
         if (!isNaN(val) && val > 0) return val;
       }
       return 0;
@@ -674,11 +911,8 @@
       const lower = text.toLowerCase();
       let jenisPos = selectedPos || "pengeluaran";
 
-      if (/\b(nabung|tabung|celengan|simpan)\b/.test(lower)) {
-        jenisPos = "nabung";
-      } else if (/\b(ibu|mamah|kas|pos ibu|kas rumah)\b/.test(lower)) {
-        jenisPos = "kas_ibu";
-      }
+      if (/\b(nabung|tabung|celengan|simpan)\b/.test(lower)) jenisPos = "nabung";
+      else if (/\b(ibu|mamah|kas|pos ibu|kas rumah)\b/.test(lower)) jenisPos = "kas_ibu";
 
       let kategori = "lainnya";
       if (jenisPos === "nabung") kategori = "nabung";
@@ -697,9 +931,7 @@
     }
 
     async function tryOnlineAIParse(rawText, fallbackParsed) {
-      if (!navigator.onLine || !state.aiEndpoint || !state.aiKey) {
-        return fallbackParsed;
-      }
+      if (!navigator.onLine || !state.aiEndpoint || !state.aiKey) return fallbackParsed;
       try {
         const res = await fetch(state.aiEndpoint, {
           method: "POST",
@@ -730,8 +962,7 @@
             jenisPos: ["pengeluaran", "kas_ibu", "nabung"].includes(aiObj.jenisPos) ? aiObj.jenisPos : fallbackParsed.jenisPos,
             kategori: String(aiObj.kategori || fallbackParsed.kategori),
             keterangan: String(aiObj.keterangan || fallbackParsed.keterangan),
-            nominal: Math.round(Number(aiObj.nominal)),
-            usedAI: true
+            nominal: Math.round(Number(aiObj.nominal))
           };
         }
         return fallbackParsed;
@@ -746,7 +977,6 @@
       let totalKasIbu = 0;
       let totalNabung = 0;
       let pengeluaranHariIni = 0;
-
       const rekapKategori = {};
 
       for (const tx of state.transactions) {
@@ -759,7 +989,6 @@
         } else if (tx.jenisPos === "nabung") {
           totalNabung += nom;
         }
-
         const key = `${tx.jenisPos}:${tx.kategori}`;
         rekapKategori[key] = (rekapKategori[key] || 0) + nom;
       }
@@ -768,6 +997,9 @@
       const jumlahHari = Math.max(1, Number(state.jumlahHari) || 1);
       const budgetHarian = Math.round(modalAwal / jumlahHari);
       const sisaSaldo = modalAwal - totalPengeluaran - totalKasIbu - totalNabung;
+      const sisaHariIni = budgetHarian - pengeluaranHariIni;
+      const sisaHariPeriode = Math.max(1, jumlahHari - 1);
+      const jatahBesok = Math.round(sisaSaldo / sisaHariPeriode);
 
       return {
         today,
@@ -779,52 +1011,133 @@
         totalNabung,
         pengeluaranHariIni,
         sisaSaldo,
+        sisaHariIni,
+        jatahBesok,
         rekapKategori
       };
     }
 
-    function renderNotif(m) {
-      const bar = document.getElementById("notifBar");
-      bar.innerHTML = "";
-      if (state.dismissedNotifDate === m.today) return;
+    function fillTemplate(tpl, m, selisihNum = 0) {
+      return String(tpl || "")
+        .replace(/\{sisa_hari\}/g, formatRupiah(m.sisaHariIni))
+        .replace(/\{jatah_besok\}/g, formatRupiah(m.jatahBesok))
+        .replace(/\{sisa_saldo\}/g, formatRupiah(m.sisaSaldo))
+        .replace(/\{terpakai_hari\}/g, formatRupiah(m.pengeluaranHariIni))
+        .replace(/\{jatah_hari\}/g, formatRupiah(m.budgetHarian))
+        .replace(/\{selisih\}/g, formatRupiah(Math.abs(selisihNum)));
+    }
 
+    function evaluateNotifCondition(m, forceEveningCheck = false) {
       const hour = new Date().getHours();
       const ratio = m.budgetHarian > 0 ? m.pengeluaranHariIni / m.budgetHarian : 0;
 
-      let notif = null;
       if (m.budgetHarian > 0 && m.pengeluaranHariIni > m.budgetHarian) {
         const selisih = m.pengeluaranHariIni - m.budgetHarian;
-        notif = {
+        return {
+          code: "overLimit",
+          id: 1002,
           cls: "notif-danger",
-          text: `Lewat batas harian! Terpakai ${formatRupiah(m.pengeluaranHariIni)} dari jatah ${formatRupiah(m.budgetHarian)} (kelebihan ${formatRupiah(selisih)}).`
-        };
-      } else if (m.budgetHarian > 0 && ratio >= 0.8) {
-        notif = {
-          cls: "notif-warn",
-          text: `Mau nyentuh batas harian (${Math.round(ratio * 100)}%)! Sudah terpakai ${formatRupiah(m.pengeluaranHariIni)} dari ${formatRupiah(m.budgetHarian)}.`
-        };
-      } else if (m.pengeluaranHariIni === 0 && hour >= 18) {
-        notif = {
-          cls: "notif-info",
-          text: `Menjelang ganti hari, pengeluaran hari ini masih Rp0. Sudah ada catatan harian belum?`
+          title: "Bestie Budget • Lewat Batas",
+          text: fillTemplate(state.notifTemplates.overLimit, m, selisih)
         };
       }
 
-      if (notif) {
+      if (m.budgetHarian > 0 && ratio >= 0.8) {
+        return {
+          code: "near80",
+          id: 1001,
+          cls: "notif-warn",
+          title: "Bestie Budget • Sisa Budget Hari Ini",
+          text: fillTemplate(state.notifTemplates.near80, m, 0)
+        };
+      }
+
+      if (m.pengeluaranHariIni === 0 && (hour >= 17 || forceEveningCheck)) {
+        return {
+          code: "noSpendEvening",
+          id: 1003,
+          cls: "notif-info",
+          title: "Bestie Budget • Info Budget",
+          text: fillTemplate(state.notifTemplates.noSpendEvening, m, 0)
+        };
+      }
+
+      return null;
+    }
+
+    async function syncNotifications(m, { forcePush = false } = {}) {
+      const cond = evaluateNotifCondition(m, forcePush);
+      const bar = document.getElementById("notifBar");
+      bar.innerHTML = "";
+
+      if (!cond) return;
+
+      const eventKey = `${m.today}:${cond.code}`;
+      const alreadySent = Array.isArray(state.sentNotifKeys) && state.sentNotifKeys.includes(eventKey);
+
+      if (!alreadySent || forcePush) {
+        await pushSystemNotification(cond.id, cond.title, cond.text, true);
+        if (!alreadySent) {
+          state.sentNotifKeys = [...(state.sentNotifKeys || []).slice(-30), eventKey];
+          saveState();
+        }
+      }
+
+      if (state.dismissedBannerKey !== eventKey || forcePush) {
         const div = document.createElement("div");
-        div.className = `notif-card ${notif.cls}`;
+        div.className = `notif-card ${cond.cls}`;
         div.innerHTML = `
-          <div>${notif.text}</div>
-          <button class="notif-close" onclick="dismissNotif('${m.today}')" title="Tutup">✕</button>
+          <div>${escapeHtml(cond.text)}</div>
+          <button class="notif-close" onclick="dismissBanner('${eventKey}')" title="Tutup">✕</button>
         `;
         bar.appendChild(div);
       }
     }
 
-    function dismissNotif(day) {
-      state.dismissedNotifDate = day;
+    function dismissBanner(eventKey) {
+      state.dismissedBannerKey = eventKey;
       saveState();
-      renderAll();
+      renderAll({ syncNotif: false });
+    }
+
+    async function triggerManualNotifCheck() {
+      await requestNotifPermissionIfNeeded();
+      const m = computeMetrics();
+      const cond = evaluateNotifCondition(m, true);
+      if (cond) {
+        const sent = await pushSystemNotification(cond.id, cond.title, cond.text, true);
+        state.dismissedBannerKey = "";
+        saveState();
+        renderAll({ syncNotif: false });
+        alert(sent
+          ? `Notif dikirim ke Pusat Notifikasi HP: "${cond.text}"`
+          : `Pesan notif: "${cond.text}"`
+        );
+      } else {
+        const amanText = `Sisa budgetmu hari ini ${formatRupiah(m.sisaHariIni)}. Untuk besok kira-kira ${formatRupiah(m.jatahBesok)} ya.`;
+        const sent = await pushSystemNotification(1099, "Bestie Budget • Info Budget", amanText, true);
+        alert(sent
+          ? `Notif dikirim ke Pusat Notifikasi HP: "${amanText}"`
+          : `Info budget: "${amanText}"`
+        );
+      }
+    }
+
+    function buildBestieReply(tx, m) {
+      if (tx.jenisPos === "nabung") {
+        return `Mantap, nabung ${formatRupiah(tx.nominal)} sudah masuk celengan! Total nabungmu sekarang ${formatRupiah(m.totalNabung)}.`;
+      }
+      if (tx.jenisPos === "kas_ibu") {
+        return `Tercatat pos Kas/Ibu sebesar ${formatRupiah(tx.nominal)}. Sisa saldo aktifmu sekarang ${formatRupiah(m.sisaSaldo)}.`;
+      }
+      if (m.budgetHarian > 0 && m.pengeluaranHariIni > m.budgetHarian) {
+        const lebih = m.pengeluaranHariIni - m.budgetHarian;
+        return `Tercatat ${formatRupiah(tx.nominal)} (${tx.kategori}). Lewat ${formatRupiah(lebih)}—sisa hari ini ${formatRupiah(m.sisaHariIni)}, estimasi besok ${formatRupiah(m.jatahBesok)}.`;
+      }
+      if (m.budgetHarian > 0 && m.pengeluaranHariIni / m.budgetHarian >= 0.8) {
+        return `Masuk ${formatRupiah(tx.nominal)} (${tx.kategori}). Sisa budgetmu hari ini ${formatRupiah(m.sisaHariIni)}, untuk besok kira-kira ${formatRupiah(m.jatahBesok)} ya.`;
+      }
+      return `Oke, ${tx.keterangan} ${formatRupiah(tx.nominal)} (${tx.kategori}) kecatat! Sisa hari ini ${formatRupiah(m.sisaHariIni)}, besok estimasi ${formatRupiah(m.jatahBesok)}.`;
     }
 
     function renderChat(m) {
@@ -835,7 +1148,8 @@
       welcome.className = "bubble-row in";
       welcome.innerHTML = `
         <div class="bubble">
-          Halo Bestie! Ketik aja catatan uangmu kayak chat biasa, contoh: <b>bensin 10rb</b>, <b>jajan 15000</b>, atau <b>nabung 20rb</b>.
+          <div class="bestie-label">Bestie</div>
+          Halo! Kirim aja catatanmu kayak chat biasa—contoh: <b>bensin 10rb</b>, <b>jajan 15000</b>, atau <b>nabung 20rb</b>. Warna, wallpaper, huruf, dan notif bisa kamu atur di menu atas!
           <div class="time-stamp">Info</div>
         </div>
       `;
@@ -853,9 +1167,9 @@
 
         const isNeg = tx.jenisPos === "pengeluaran" || tx.jenisPos === "kas_ibu";
         const signPrefix = isNeg ? "-" : "+";
-        const row = document.createElement("div");
-        row.className = "bubble-row out";
-        row.innerHTML = `
+        const rowOut = document.createElement("div");
+        rowOut.className = "bubble-row out";
+        rowOut.innerHTML = `
           <div class="bubble">
             <div>"${escapeHtml(tx.rawText || tx.keterangan)}"</div>
             <div class="tx-amount ${isNeg ? "amt-neg" : "amt-pos"}">${signPrefix}${formatRupiah(tx.nominal)}</div>
@@ -871,7 +1185,20 @@
             <div class="time-stamp">${tx.jam || ""}</div>
           </div>
         `;
-        container.appendChild(row);
+        container.appendChild(rowOut);
+
+        if (tx.replyText) {
+          const rowIn = document.createElement("div");
+          rowIn.className = "bubble-row in";
+          rowIn.innerHTML = `
+            <div class="bubble">
+              <div class="bestie-label">Bestie</div>
+              <div>${escapeHtml(tx.replyText)}</div>
+              <div class="time-stamp">${tx.jam || ""}</div>
+            </div>
+          `;
+          container.appendChild(rowIn);
+        }
       }
 
       container.scrollTop = container.scrollHeight;
@@ -891,7 +1218,8 @@
         .replace(/"/g, "&quot;");
     }
 
-    function renderAll() {
+    function renderAll({ syncNotif = true } = {}) {
+      applyAppearance();
       const m = computeMetrics();
       document.getElementById("sumSisa").textContent = formatRupiah(m.sisaSaldo);
       document.getElementById("sumHarian").textContent = formatRupiah(m.budgetHarian);
@@ -899,17 +1227,20 @@
       document.getElementById("sumNabung").textContent = formatRupiah(m.totalNabung);
 
       const modeText = navigator.onLine && state.aiEndpoint && state.aiKey
-        ? "Hybrid AI + Offline aktif"
-        : "Offline cepat aktif";
+        ? "Hybrid AI + Offline"
+        : "Offline cepat";
       document.getElementById("subStatus").textContent =
         `Hari ini: ${formatRupiah(m.pengeluaranHariIni)} / ${formatRupiah(m.budgetHarian)} • ${modeText}`;
 
-      renderNotif(m);
       renderChat(m);
+      if (syncNotif) {
+        syncNotifications(m);
+      }
     }
 
     async function handleSend(e) {
       e.preventDefault();
+      await requestNotifPermissionIfNeeded();
       const input = document.getElementById("msgInput");
       const posSel = document.getElementById("posSelect");
       const raw = input.value.trim();
@@ -922,11 +1253,9 @@
       }
 
       const detected = detectPosAndKategori(raw, posSel.value);
-      const fallback = { ...detected, nominal };
-      const finalParsed = await tryOnlineAIParse(raw, fallback);
+      const finalParsed = await tryOnlineAIParse(raw, { ...detected, nominal });
 
-      state.dismissedNotifDate = "";
-      state.transactions.push({
+      const newTx = {
         id: "tx-" + Date.now() + "-" + Math.random().toString(36).slice(2, 6),
         tanggal: todayStr(),
         jam: nowTimeStr(),
@@ -934,12 +1263,18 @@
         kategori: finalParsed.kategori,
         keterangan: finalParsed.keterangan,
         nominal: finalParsed.nominal,
-        rawText: raw
-      });
+        rawText: raw,
+        replyText: ""
+      };
+
+      state.dismissedBannerKey = "";
+      state.transactions.push(newTx);
+      const mAfter = computeMetrics();
+      newTx.replyText = buildBestieReply(newTx, mAfter);
 
       saveState();
       input.value = "";
-      renderAll();
+      renderAll({ syncNotif: true });
     }
 
     function quickFill(text, pos) {
@@ -952,7 +1287,7 @@
     function deleteTx(id) {
       state.transactions = state.transactions.filter((t) => t.id !== id);
       saveState();
-      renderAll();
+      renderAll({ syncNotif: true });
     }
 
     function editTx(id) {
@@ -965,22 +1300,114 @@
         alert("Nominal tidak valid.");
         return;
       }
-      const baruKet = prompt("Keterangan / kategori:", tx.keterangan);
+      const baruKet = prompt("Keterangan:", tx.keterangan);
       if (baruKet !== null && baruKet.trim() !== "") {
         tx.keterangan = baruKet.trim();
       }
       tx.nominal = cleanNum;
+      const mAfter = computeMetrics();
+      tx.replyText = buildBestieReply(tx, mAfter);
       saveState();
-      renderAll();
+      renderAll({ syncNotif: true });
+    }
+
+    function updateAppearanceSetting(key, value) {
+      state[key] = value;
+      saveState();
+      renderAll({ syncNotif: false });
+      openModal("tema");
+    }
+
+    function applyTonePreset(toneName) {
+      const preset = TONE_PRESETS[toneName];
+      if (!preset) return;
+      const tNear = document.getElementById("tplNear80");
+      const tOver = document.getElementById("tplOverLimit");
+      const tNoSpend = document.getElementById("tplNoSpend");
+      if (tNear) tNear.value = preset.near80;
+      if (tOver) tOver.value = preset.overLimit;
+      if (tNoSpend) tNoSpend.value = preset.noSpendEvening;
     }
 
     function openModal(type) {
       const m = computeMetrics();
       const sheet = document.getElementById("modalSheet");
-      if (type === "budget") {
+
+      if (type === "tema") {
+        const themes = [
+          { id: "wa-green", name: "Hijau Klasik", colors: ["#075e54", "#d9fdd3", "#efeae2"] },
+          { id: "butter-brown", name: "Butter & Cokelat", colors: ["#6b4423", "#f6e7b8", "#f7f1e3"] },
+          { id: "sage-cream", name: "Sage & Krem", colors: ["#3b6e5c", "#d6ebe2", "#eef2ec"] },
+          { id: "berry-soft", name: "Berry Soft", colors: ["#7a2e4d", "#f8dce8", "#f7eef2"] }
+        ];
+        const wallpapers = [
+          { id: "titik", label: "Titik Halus" },
+          { id: "polos", label: "Polos" },
+          { id: "kotak", label: "Kotak Tipis" },
+          { id: "sunset", label: "Senja Hangat" }
+        ];
+        const fonts = [
+          { id: "sans", label: "Sans Bersih" },
+          { id: "rounded", label: "Bulat Santai" },
+          { id: "serif", label: "Serif Klasik" },
+          { id: "mono", label: "Monospace" }
+        ];
+        const sizes = [
+          { id: "kecil", label: "Kecil" },
+          { id: "normal", label: "Normal" },
+          { id: "besar", label: "Besar" },
+          { id: "ekstra", label: "Ekstra Besar" }
+        ];
+
         sheet.innerHTML = `
           <div class="modal-head">
-            <h3>Atur Modal & Budget Multi-Hari</h3>
+            <h3>Atur Tampilan Chat</h3>
+            <button class="mini-btn" onclick="closeModal()">Tutup</button>
+          </div>
+
+          <div class="field"><label>Warna Tema</label></div>
+          <div class="theme-grid">
+            ${themes.map((t) => `
+              <button class="theme-opt ${state.theme === t.id ? "active" : ""}" onclick="updateAppearanceSetting('theme', '${t.id}')">
+                <div>${t.name} ${state.theme === t.id ? "✓" : ""}</div>
+                <div class="swatch-row">
+                  ${t.colors.map((c) => `<span class="swatch" style="background:${c}"></span>`).join("")}
+                </div>
+              </button>
+            `).join("")}
+          </div>
+
+          <div class="field"><label>Wallpaper Ruang Chat</label></div>
+          <div class="theme-grid">
+            ${wallpapers.map((w) => `
+              <button class="theme-opt ${state.wallpaper === w.id ? "active" : ""}" onclick="updateAppearanceSetting('wallpaper', '${w.id}')">
+                ${w.label} ${state.wallpaper === w.id ? "✓" : ""}
+              </button>
+            `).join("")}
+          </div>
+
+          <div class="field"><label>Gaya Huruf</label></div>
+          <div class="theme-grid">
+            ${fonts.map((f) => `
+              <button class="theme-opt ${state.fontFamily === f.id ? "active" : ""}" onclick="updateAppearanceSetting('fontFamily', '${f.id}')">
+                ${f.label} ${state.fontFamily === f.id ? "✓" : ""}
+              </button>
+            `).join("")}
+          </div>
+
+          <div class="field"><label>Ukuran Huruf</label></div>
+          <div class="theme-grid">
+            ${sizes.map((s) => `
+              <button class="theme-opt ${state.fontSize === s.id ? "active" : ""}" onclick="updateAppearanceSetting('fontSize', '${s.id}')">
+                ${s.label} ${state.fontSize === s.id ? "✓" : ""}
+              </button>
+            `).join("")}
+          </div>
+        `;
+      } else if (type === "budget") {
+        sheet.innerHTML = `
+          <div class="modal-head">
+            <h3>Atur Modal, Budget & Notifikasi</h3>
             <button class="mini-btn" onclick="closeModal()">Tutup</button>
           </div>
           <div class="field">
@@ -992,8 +1419,42 @@
             <input type="number" id="inpHari" value="${state.jumlahHari}" min="1" max="365" />
           </div>
           <div class="rekap-box">
-            Estimasi jatah harian: <b id="previewHarian">${formatRupiah(m.budgetHarian)}</b> / hari
+            <div class="rekap-line"><span>Jatah Harian Awal</span><b>${formatRupiah(m.budgetHarian)}</b></div>
+            <div class="rekap-line"><span>Sisa Budget Hari Ini</span><b>${formatRupiah(m.sisaHariIni)}</b></div>
+            <div class="rekap-line"><span>Estimasi Jatah Besok</span><b>${formatRupiah(m.jatahBesok)}</b></div>
           </div>
+
+          <hr style="border:none;border-top:1px solid #e2e8f0;margin:12px 0;" />
+          <div style="font-weight:700;font-size:13.5px;margin-bottom:8px;">Isi & Suara Notifikasi (Bisa Diubah)</div>
+
+          <label class="check-row">
+            <input type="checkbox" id="inpVoiceEnabled" ${state.notifVoiceEnabled ? "checked" : ""} />
+            <span>Aktifkan Suara Notifikasi (TTS)</span>
+          </label>
+
+          <div class="field">
+            <label>Gaya Kalimat Cepat</label>
+            <select id="inpTone" onchange="applyTonePreset(this.value)">
+              <option value="santai" ${state.notifTone === "santai" ? "selected" : ""}>Santai (Sisa hari ini... untuk besok...)</option>
+              <option value="tegas" ${state.notifTone === "tegas" ? "selected" : ""}>Tegas</option>
+              <option value="ringkas" ${state.notifTone === "ringkas" ? "selected" : ""}>Ringkas</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Kalimat Notif Mau Nyentuh Batas (≥80%)</label>
+            <input type="text" id="tplNear80" value="${escapeHtml(state.notifTemplates.near80)}" />
+          </div>
+          <div class="field">
+            <label>Kalimat Notif Lewat Batas</label>
+            <input type="text" id="tplOverLimit" value="${escapeHtml(state.notifTemplates.overLimit)}" />
+          </div>
+          <div class="field">
+            <label>Kalimat Notif Belum Ada Pengeluaran Sore/Malam</label>
+            <input type="text" id="tplNoSpend" value="${escapeHtml(state.notifTemplates.noSpendEvening)}" />
+            <div class="hint-small">Variabel otomatis: <code>{sisa_hari}</code>, <code>{jatah_besok}</code>, <code>{sisa_saldo}</code>, <code>{terpakai_hari}</code>, <code>{jatah_hari}</code>, <code>{selisih}</code>.</div>
+          </div>
+
           <hr style="border:none;border-top:1px solid #e2e8f0;margin:12px 0;" />
           <div class="field">
             <label>Opsional AI Endpoint (kosongkan jika pakai mode Offline saja)</label>
@@ -1007,15 +1468,6 @@
             <button class="btn-primary" onclick="saveBudgetSettings()">Simpan Pengaturan</button>
           </div>
         `;
-        const inpM = document.getElementById("inpModal");
-        const inpH = document.getElementById("inpHari");
-        const updatePrev = () => {
-          const mv = Number(inpM.value) || 0;
-          const hv = Math.max(1, Number(inpH.value) || 1);
-          document.getElementById("previewHarian").textContent = formatRupiah(Math.round(mv / hv));
-        };
-        inpM.addEventListener("input", updatePrev);
-        inpH.addEventListener("input", updatePrev);
       } else if (type === "rekap") {
         const lines = Object.entries(m.rekapKategori)
           .map(([k, v]) => `<div class="rekap-line"><span>${escapeHtml(k.replace(":", " • "))}</span><b>${formatRupiah(v)}</b></div>`)
@@ -1032,6 +1484,8 @@
             <div class="rekap-line"><span>Total Kas / Ibu</span><b>-${formatRupiah(m.totalKasIbu)}</b></div>
             <div class="rekap-line"><span>Total Nabung</span><b>+${formatRupiah(m.totalNabung)}</b></div>
             <div class="rekap-line"><span>Sisa Saldo</span><b>${formatRupiah(m.sisaSaldo)}</b></div>
+            <div class="rekap-line"><span>Sisa Budget Hari Ini</span><b>${formatRupiah(m.sisaHariIni)}</b></div>
+            <div class="rekap-line"><span>Estimasi Jatah Besok</span><b>${formatRupiah(m.jatahBesok)}</b></div>
           </div>
           <div class="rekap-box">
             <div style="font-weight:700;margin-bottom:6px;">Rincian per Pos & Kategori</div>
@@ -1068,16 +1522,22 @@
     }
 
     function saveBudgetSettings() {
-      const mVal = Number(document.getElementById("inpModal").value) || 0;
-      const hVal = Math.max(1, Number(document.getElementById("inpHari").value) || 1);
-      state.modalAwal = mVal;
-      state.jumlahHari = hVal;
+      state.modalAwal = Number(document.getElementById("inpModal").value) || 0;
+      state.jumlahHari = Math.max(1, Number(document.getElementById("inpHari").value) || 1);
+      state.notifVoiceEnabled = Boolean(document.getElementById("inpVoiceEnabled").checked);
+      state.notifTone = document.getElementById("inpTone").value;
+      state.notifTemplates = {
+        near80: document.getElementById("tplNear80").value.trim() || TONE_PRESETS.santai.near80,
+        overLimit: document.getElementById("tplOverLimit").value.trim() || TONE_PRESETS.santai.overLimit,
+        noSpendEvening: document.getElementById("tplNoSpend").value.trim() || TONE_PRESETS.santai.noSpendEvening
+      };
       state.aiEndpoint = document.getElementById("inpAiUrl").value.trim();
       state.aiKey = document.getElementById("inpAiKey").value.trim();
-      state.dismissedNotifDate = "";
+      state.dismissedBannerKey = "";
+      state.sentNotifKeys = [];
       saveState();
       closeModal();
-      renderAll();
+      renderAll({ syncNotif: true });
     }
 
     function copyJson() {
@@ -1095,10 +1555,17 @@
           alert("Format JSON tidak sesuai (butuh array transactions).");
           return;
         }
-        state = { ...defaultState(), ...parsed };
+        state = {
+          ...defaultState(),
+          ...parsed,
+          notifTemplates: {
+            ...TONE_PRESETS.santai,
+            ...(parsed.notifTemplates || {})
+          }
+        };
         saveState();
         closeModal();
-        renderAll();
+        renderAll({ syncNotif: true });
         alert("Data berhasil diimpor!");
       } catch (e) {
         alert("JSON tidak valid: " + e.message);
@@ -1110,10 +1577,10 @@
       state = defaultState();
       saveState();
       closeModal();
-      renderAll();
+      renderAll({ syncNotif: true });
     }
 
-    renderAll();
+    requestNotifPermissionIfNeeded().then(() => renderAll({ syncNotif: true }));
   </script>
 </body>
 </html>
