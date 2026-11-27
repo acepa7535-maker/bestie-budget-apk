@@ -51,17 +51,26 @@ jobs:
 
       - name: Initialize Capacitor Android project
         run: |
+          rm -rf android
           npm init -y
           npm install @capacitor/core @capacitor/cli @capacitor/android
           npx cap init "Bestie Budget" "com.bestie.budget" --web-dir www
-          if [ ! -d "android" ]; then
-            npx cap add android
-          fi
+          npx cap add android
           npx cap copy android
           npx cap sync android
 
       - name: Build Debug APK
         run: |
+          cat << 'EOF' >> android/app/build.gradle
+
+          configurations.all {
+              resolutionStrategy {
+                  force 'org.jetbrains.kotlin:kotlin-stdlib:1.8.22'
+                  force 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.22'
+                  force 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.22'
+              }
+          }
+          EOF
           cd android
           chmod +x gradlew
           ./gradlew assembleDebug
