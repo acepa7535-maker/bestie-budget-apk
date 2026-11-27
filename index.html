@@ -2,286 +2,1118 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bestie Budget</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Bestie Budget — Chat</title>
   <style>
     :root {
-      --bg: #fff7fa;
-      --card: #ffffff;
-      --primary: #e85d9a;
-      --primary-dark: #c9437e;
-      --text: #2a2229;
-      --muted: #7a6b77;
-      --border: #f2dce6;
-      --ok: #1f9d68;
-      --warn: #d97706;
-      --danger: #dc2626;
+      --bg-chat: #efeae2;
+      --header-bg: #075e54;
+      --header-deep: #054c44;
+      --accent: #00a884;
+      --bubble-out: #d9fdd3;
+      --bubble-in: #ffffff;
+      --text-main: #111b21;
+      --text-muted: #54656f;
+      --border-soft: #e2ddd5;
+      --danger: #c62828;
+      --warn: #b26a00;
+      --ok: #1b5e20;
     }
-    * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
-    body {
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
       margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      padding-bottom: 40px;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg-chat);
+      color: var(--text-main);
+      overflow: hidden;
     }
-    header {
-      background: linear-gradient(135deg, var(--primary), #ff8fb8);
+
+    .app {
+      display: flex;
+      flex-direction: column;
+      height: 100dvh;
+      max-width: 640px;
+      margin: 0 auto;
+      background: var(--bg-chat);
+      box-shadow: 0 0 24px rgba(0,0,0,0.08);
+    }
+
+    /* Header ala WA */
+    .wa-header {
+      background: var(--header-bg);
       color: #fff;
-      padding: 18px 16px;
-      position: sticky;
-      top: 0;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-shrink: 0;
       z-index: 10;
     }
-    header h1 { margin: 0; font-size: 1.25rem; }
-    header p { margin: 4px 0 0; font-size: 0.85rem; opacity: 0.95; }
-    .container { max-width: 720px; margin: 0 auto; padding: 14px; }
-    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 14px;
-      margin-bottom: 14px;
-      box-shadow: 0 2px 8px rgba(232, 93, 154, 0.06);
+
+    .wa-header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
     }
-    .stat-label { font-size: 0.78rem; color: var(--muted); }
-    .stat-val { font-size: 1rem; font-weight: 700; margin-top: 4px; }
-    h2 { font-size: 1rem; margin: 0 0 10px; }
-    label { display: block; font-size: 0.85rem; color: var(--muted); margin-top: 8px; margin-bottom: 4px; }
-    input, select, button {
-      width: 100%;
-      padding: 10px 12px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      font-size: 0.95rem;
+
+    .avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #128c7e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 15px;
+      flex-shrink: 0;
+      border: 1.5px solid rgba(255,255,255,0.28);
     }
-    input, select { background: #fff; color: var(--text); }
-    button {
-      background: var(--primary);
+
+    .wa-title-wrap {
+      min-width: 0;
+    }
+
+    .wa-title {
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .wa-sub {
+      font-size: 11.5px;
+      color: rgba(255,255,255,0.88);
+      line-height: 1.25;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .icon-btn {
+      background: rgba(255,255,255,0.14);
       color: #fff;
       border: none;
+      border-radius: 8px;
+      padding: 6px 9px;
+      font-size: 12px;
       font-weight: 600;
       cursor: pointer;
-      margin-top: 12px;
     }
-    button:hover { background: var(--primary-dark); }
-    button.secondary { background: #fce7f0; color: var(--primary-dark); }
-    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .tx-item {
+
+    .icon-btn:active {
+      background: rgba(255,255,255,0.26);
+    }
+
+    /* Ringkasan saldo ringkas di bawah header */
+    .summary-strip {
+      background: var(--header-deep);
+      color: #fff;
+      padding: 7px 12px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      font-size: 11px;
+      flex-shrink: 0;
+    }
+
+    .sum-box {
+      background: rgba(255,255,255,0.1);
+      border-radius: 7px;
+      padding: 5px 6px;
+      text-align: center;
+    }
+
+    .sum-label {
+      opacity: 0.85;
+      font-size: 10px;
+      display: block;
+    }
+
+    .sum-val {
+      font-weight: 700;
+      font-size: 11.5px;
+      display: block;
+      margin-top: 1px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Banner notifikasi pintar */
+    .notif-bar {
+      padding: 0 10px;
+      flex-shrink: 0;
+    }
+
+    .notif-card {
+      margin-top: 8px;
+      padding: 8px 11px;
+      border-radius: 10px;
+      font-size: 12px;
+      line-height: 1.35;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+    }
+
+    .notif-warn {
+      background: #fff8e1;
+      border-left: 4px solid #f59e0b;
+      color: var(--warn);
+    }
+
+    .notif-danger {
+      background: #ffebee;
+      border-left: 4px solid #ef4444;
+      color: var(--danger);
+    }
+
+    .notif-info {
+      background: #e8f5e9;
+      border-left: 4px solid #22c55e;
+      color: var(--ok);
+    }
+
+    .notif-close {
+      background: transparent;
+      border: none;
+      font-weight: 700;
+      font-size: 14px;
+      color: inherit;
+      cursor: pointer;
+      padding: 0 2px;
+    }
+
+    /* Area obrolan yang digulir */
+    .chat-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      scroll-behavior: smooth;
+    }
+
+    .date-chip {
+      align-self: center;
+      background: rgba(255,255,255,0.88);
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 8px;
+      box-shadow: 0 1px 1px rgba(0,0,0,0.06);
+      margin: 4px 0;
+    }
+
+    .bubble-row {
+      display: flex;
+      flex-direction: column;
+      max-width: 88%;
+    }
+
+    .bubble-row.out {
+      align-self: flex-end;
+    }
+
+    .bubble-row.in {
+      align-self: flex-start;
+    }
+
+    .bubble {
+      padding: 8px 11px;
+      border-radius: 12px;
+      font-size: 13.5px;
+      line-height: 1.4;
+      box-shadow: 0 1px 1.5px rgba(0,0,0,0.08);
+      position: relative;
+      word-wrap: break-word;
+    }
+
+    .bubble-row.out .bubble {
+      background: var(--bubble-out);
+      border-top-right-radius: 3px;
+    }
+
+    .bubble-row.in .bubble {
+      background: var(--bubble-in);
+      border-top-left-radius: 3px;
+    }
+
+    .tx-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      margin-top: 5px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .tag {
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 10.5px;
+    }
+
+    .tag-pengeluaran {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .tag-kas_ibu {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .tag-nabung {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .tx-amount {
+      font-weight: 700;
+      font-size: 13px;
+      margin-top: 3px;
+    }
+
+    .amt-neg { color: #b91c1c; }
+    .amt-pos { color: #15803d; }
+
+    .bubble-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 5px;
+    }
+
+    .mini-btn {
+      border: none;
+      background: rgba(0,0,0,0.06);
+      color: var(--text-main);
+      border-radius: 6px;
+      padding: 3px 7px;
+      font-size: 10.5px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .mini-btn.del {
+      color: #b91c1c;
+      background: rgba(185,28,28,0.08);
+    }
+
+    .time-stamp {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-align: right;
+      margin-top: 3px;
+    }
+
+    /* Quick chips di atas input */
+    .chips-bar {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding: 6px 10px;
+      background: #f7f5f0;
+      border-top: 1px solid var(--border-soft);
+      flex-shrink: 0;
+      scrollbar-width: none;
+    }
+
+    .chips-bar::-webkit-scrollbar { display: none; }
+
+    .chip {
+      background: #fff;
+      border: 1px solid #d5d0c8;
+      color: var(--text-main);
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 11.5px;
+      white-space: nowrap;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .chip:active {
+      background: #e7f8f3;
+      border-color: var(--accent);
+    }
+
+    /* Bar ketik ala WA */
+    .input-bar {
+      background: #f0f2f5;
+      padding: 7px 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .pos-select {
+      border: 1px solid #d1d5db;
+      background: #fff;
+      border-radius: 18px;
+      padding: 8px 8px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text-main);
+      max-width: 96px;
+    }
+
+    .msg-input {
+      flex: 1;
+      border: none;
+      background: #fff;
+      border-radius: 20px;
+      padding: 9px 13px;
+      font-size: 14px;
+      outline: none;
+      min-width: 0;
+    }
+
+    .send-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: none;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    /* Modal pengaturan / rekap / backup */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 50;
+    }
+
+    .modal-backdrop.open { display: flex; }
+
+    .modal-sheet {
+      background: #fff;
+      width: 100%;
+      max-width: 640px;
+      max-height: 85dvh;
+      overflow-y: auto;
+      border-top-left-radius: 18px;
+      border-top-right-radius: 18px;
+      padding: 16px;
+    }
+
+    .modal-head {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 0;
-      border-bottom: 1px solid var(--border);
-      gap: 8px;
+      margin-bottom: 12px;
     }
-    .tx-item:last-child { border-bottom: none; }
-    .tx-title { font-weight: 600; font-size: 0.92rem; }
-    .tx-meta { font-size: 0.78rem; color: var(--muted); }
-    .plus { color: var(--ok); font-weight: 700; }
-    .minus { color: var(--danger); font-weight: 700; }
-    .del-btn {
-      width: auto;
-      padding: 6px 10px;
+
+    .modal-head h3 {
       margin: 0;
-      font-size: 0.78rem;
-      background: #fee2e2;
-      color: var(--danger);
+      font-size: 16px;
     }
-    .note { font-size: 0.8rem; color: var(--muted); margin-top: 8px; line-height: 1.4; }
+
+    .field {
+      margin-bottom: 10px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text-muted);
+    }
+
+    .field input, .field textarea {
+      width: 100%;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 13px;
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .btn-primary {
+      background: var(--header-bg);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 9px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-sec {
+      background: #e2e8f0;
+      color: var(--text-main);
+      border: none;
+      border-radius: 8px;
+      padding: 9px 12px;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .rekap-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 10px;
+      font-size: 12.5px;
+      margin-bottom: 12px;
+    }
+
+    .rekap-line {
+      display: flex;
+      justify-content: space-between;
+      padding: 4px 0;
+      border-bottom: 1px dashed #e2e8f0;
+    }
+
+    .rekap-line:last-child { border-bottom: none; }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Bestie Budget</h1>
-    <p>Catat keuangan offline di HP &amp; impor data.json lama</p>
-  </header>
-
-  <div class="container">
-    <div class="grid">
-      <div class="card" style="margin:0;">
-        <div class="stat-label">Pemasukan</div>
-        <div class="stat-val plus" id="totalIn">Rp0</div>
-      </div>
-      <div class="card" style="margin:0;">
-        <div class="stat-label">Pengeluaran</div>
-        <div class="stat-val minus" id="totalOut">Rp0</div>
-      </div>
-      <div class="card" style="margin:0;">
-        <div class="stat-label">Sisa Saldo</div>
-        <div class="stat-val" id="balance">Rp0</div>
-      </div>
-    </div>
-
-    <div class="card">
-      <h2>Tambah Catatan</h2>
-      <form id="txForm">
-        <div class="row">
-          <div>
-            <label for="type">Jenis</label>
-            <select id="type">
-              <option value="expense">Pengeluaran</option>
-              <option value="income">Pemasukan</option>
-            </select>
-          </div>
-          <div>
-            <label for="amount">Nominal (Rp)</label>
-            <input id="amount" type="number" min="1" placeholder="Contoh: 15000" required />
-          </div>
+  <div class="app">
+    <!-- Header ala WA -->
+    <div class="wa-header">
+      <div class="wa-header-left">
+        <div class="avatar">BB</div>
+        <div class="wa-title-wrap">
+          <div class="wa-title">Bestie Budget</div>
+          <div class="wa-sub" id="subStatus">Siap catat • Offline & Online</div>
         </div>
-        <div class="row">
-          <div>
-            <label for="category">Kategori</label>
-            <input id="category" type="text" placeholder="Jajan, Transport, dll" />
-          </div>
-          <div>
-            <label for="date">Tanggal</label>
-            <input id="date" type="date" required />
-          </div>
-        </div>
-        <label for="note">Keterangan</label>
-        <input id="note" type="text" placeholder="Catatan singkat..." />
-        <button type="submit">Simpan ke HP</button>
-      </form>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" onclick="openModal('rekap')">Rekap</button>
+        <button class="icon-btn" onclick="openModal('budget')">Budget</button>
+        <button class="icon-btn" onclick="openModal('data')">Data</button>
+      </div>
     </div>
 
-    <div class="card">
-      <h2>Riwayat Transaksi</h2>
-      <div id="txList"></div>
+    <!-- Strip Angka Single Source of Truth -->
+    <div class="summary-strip">
+      <div class="sum-box">
+        <span class="sum-label">Sisa Saldo</span>
+        <span class="sum-val" id="sumSisa">Rp0</span>
+      </div>
+      <div class="sum-box">
+        <span class="sum-label">Jatah/Hari</span>
+        <span class="sum-val" id="sumHarian">Rp0</span>
+      </div>
+      <div class="sum-box">
+        <span class="sum-label">Kas / Ibu</span>
+        <span class="sum-val" id="sumKas">Rp0</span>
+      </div>
+      <div class="sum-box">
+        <span class="sum-label">Nabung</span>
+        <span class="sum-val" id="sumNabung">Rp0</span>
+      </div>
     </div>
 
-    <div class="card">
-      <h2>Impor / Ekspor Data (data.json)</h2>
-      <label for="jsonFile">Pilih file data.json dari backup</label>
-      <input id="jsonFile" type="file" accept=".json,application/json" />
-      <button type="button" class="secondary" id="exportBtn">Unduh Cadangan JSON</button>
-      <p class="note">Data tersimpan otomatis di memori browser HP (<code>localStorage</code>) sehingga tetap jalan tanpa internet maupun server PHP.</p>
+    <!-- Area Notifikasi Pintar -->
+    <div class="notif-bar" id="notifBar"></div>
+
+    <!-- Ruang Chat yang Digulir -->
+    <div class="chat-scroll" id="chatScroll"></div>
+
+    <!-- Quick Chips -->
+    <div class="chips-bar">
+      <button class="chip" onclick="quickFill('bensin 10000', 'pengeluaran')">⛽ Bensin 10rb</button>
+      <button class="chip" onclick="quickFill('jajan 15000', 'pengeluaran')">🍢 Jajan 15rb</button>
+      <button class="chip" onclick="quickFill('parkir motor 2000', 'pengeluaran')">🅿️ Parkir 2rb</button>
+      <button class="chip" onclick="quickFill('kas ibu 20000', 'kas_ibu')">🏠 Kas/Ibu 20rb</button>
+      <button class="chip" onclick="quickFill('nabung 10000', 'nabung')">🐷 Nabung 10rb</button>
+      <button class="chip" onclick="openModal('budget')">📅 Atur Modal</button>
     </div>
+
+    <!-- Bar Ketik Bawah -->
+    <form class="input-bar" id="chatForm" onsubmit="handleSend(event)">
+      <select class="pos-select" id="posSelect" title="Pilih jenis pos">
+        <option value="pengeluaran">Pengeluaran</option>
+        <option value="kas_ibu">Kas / Ibu</option>
+        <option value="nabung">Nabung</option>
+      </select>
+      <input
+        type="text"
+        class="msg-input"
+        id="msgInput"
+        placeholder="Ketik: bensin 10rb, jajan 15000, nabung 20rb..."
+        autocomplete="off"
+      />
+      <button type="submit" class="send-btn" title="Kirim">➤</button>
+    </form>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-backdrop" id="modalBackdrop" onclick="closeModalBackdrop(event)">
+    <div class="modal-sheet" id="modalSheet"></div>
   </div>
 
   <script>
-    const STORAGE_KEY = "bestie_budget_items_v1";
-    let items = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    const STORAGE_KEY = "bestie_budget_chat_v1";
 
-    const fmt = (n) => "Rp" + Number(n || 0).toLocaleString("id-ID");
-    const dateInput = document.getElementById("date");
-    dateInput.value = new Date().toISOString().slice(0, 10);
-
-    function saveAndRender() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-      render();
+    function todayStr() {
+      const d = new Date();
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      return `${y}-${m}-${day}`;
     }
 
-    function render() {
-      let inc = 0, exp = 0;
-      const listEl = document.getElementById("txList");
-      listEl.innerHTML = "";
+    function nowTimeStr() {
+      const d = new Date();
+      return `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+    }
 
-      if (!items.length) {
-        listEl.innerHTML = '<p class="note">Belum ada transaksi tercatat.</p>';
+    function formatRupiah(num) {
+      const n = Number(num) || 0;
+      if (n < 0) {
+        return `-Rp${Math.abs(n).toLocaleString("id-ID")}`;
+      }
+      return `Rp${n.toLocaleString("id-ID")}`;
+    }
+
+    function defaultState() {
+      return {
+        modalAwal: 100000,
+        jumlahHari: 5,
+        tanggalMulai: todayStr(),
+        aiEndpoint: "",
+        aiKey: "",
+        dismissedNotifDate: "",
+        transactions: [
+          {
+            id: "tx-init-1",
+            tanggal: todayStr(),
+            jam: nowTimeStr(),
+            jenisPos: "pengeluaran",
+            kategori: "jajan",
+            keterangan: "nyeblak",
+            nominal: 15000,
+            rawText: "jajan nyeblak 15000"
+          }
+        ]
+      };
+    }
+
+    let state = loadState();
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return defaultState();
+        const parsed = JSON.parse(raw);
+        return { ...defaultState(), ...parsed };
+      } catch (e) {
+        return defaultState();
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    // Parse nominal seperti "15rb", "15k", "15.000", "15000"
+    function parseNominal(text) {
+      const clean = text.toLowerCase().replace(/rp/g, "").trim();
+      const rbMatch = clean.match(/(\d+(?:[.,]\d+)?)\s*(rb|ribu|k)\b/);
+      if (rbMatch) {
+        const val = parseFloat(rbMatch[1].replace(",", "."));
+        return Math.round(val * 1000);
+      }
+      const numMatch = clean.match(/(\d{1,3}(?:[.,]\d{3})+|\d+)/);
+      if (numMatch) {
+        const digitsOnly = numMatch[1].replace(/[.,]/g, "");
+        const val = parseInt(digitsOnly, 10);
+        if (!isNaN(val) && val > 0) return val;
+      }
+      return 0;
+    }
+
+    function detectPosAndKategori(text, selectedPos) {
+      const lower = text.toLowerCase();
+      let jenisPos = selectedPos || "pengeluaran";
+
+      if (/\b(nabung|tabung|celengan|simpan)\b/.test(lower)) {
+        jenisPos = "nabung";
+      } else if (/\b(ibu|mamah|kas|pos ibu|kas rumah)\b/.test(lower)) {
+        jenisPos = "kas_ibu";
       }
 
-      items.forEach((it, idx) => {
-        const amt = Number(it.amount) || 0;
-        if (it.type === "income") inc += amt;
-        else exp += amt;
+      let kategori = "lainnya";
+      if (jenisPos === "nabung") kategori = "nabung";
+      else if (jenisPos === "kas_ibu") kategori = "pos ibu/kas";
+      else if (/\b(bensin|pertalite|pertamax|solar|bbm)\b/.test(lower)) kategori = "bensin";
+      else if (/\b(parkir)\b/.test(lower)) kategori = "parkir motor";
+      else if (/\b(jajan|makan|minum|nyeblak|kopi|snack|bakso|mie|es)\b/.test(lower)) kategori = "jajan";
 
+      const keterangan = text
+        .replace(/rp\s*/gi, "")
+        .replace(/\b\d+(?:[.,]\d+)?\s*(rb|ribu|k)?\b/gi, "")
+        .replace(/\s+/g, " ")
+        .trim() || kategori;
+
+      return { jenisPos, kategori, keterangan };
+    }
+
+    async function tryOnlineAIParse(rawText, fallbackParsed) {
+      if (!navigator.onLine || !state.aiEndpoint || !state.aiKey) {
+        return fallbackParsed;
+      }
+      try {
+        const res = await fetch(state.aiEndpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${state.aiKey}`
+          },
+          body: JSON.stringify({
+            model: "gpt-4o-mini",
+            messages: [
+              {
+                role: "system",
+                content: 'Ekstrak transaksi keuangan jadi JSON valid saja: {"jenisPos":"pengeluaran|kas_ibu|nabung","kategori":"string","keterangan":"string","nominal":number}.'
+              },
+              { role: "user", content: rawText }
+            ],
+            temperature: 0.1
+          })
+        });
+        if (!res.ok) return fallbackParsed;
+        const data = await res.json();
+        const content = data?.choices?.[0]?.message?.content || "";
+        const jsonMatch = content.match(/\{[\s\S]*\}/);
+        if (!jsonMatch) return fallbackParsed;
+        const aiObj = JSON.parse(jsonMatch[0]);
+        if (aiObj.nominal && Number(aiObj.nominal) > 0) {
+          return {
+            jenisPos: ["pengeluaran", "kas_ibu", "nabung"].includes(aiObj.jenisPos) ? aiObj.jenisPos : fallbackParsed.jenisPos,
+            kategori: String(aiObj.kategori || fallbackParsed.kategori),
+            keterangan: String(aiObj.keterangan || fallbackParsed.keterangan),
+            nominal: Math.round(Number(aiObj.nominal)),
+            usedAI: true
+          };
+        }
+        return fallbackParsed;
+      } catch (e) {
+        return fallbackParsed;
+      }
+    }
+
+    function computeMetrics() {
+      const today = todayStr();
+      let totalPengeluaran = 0;
+      let totalKasIbu = 0;
+      let totalNabung = 0;
+      let pengeluaranHariIni = 0;
+
+      const rekapKategori = {};
+
+      for (const tx of state.transactions) {
+        const nom = Number(tx.nominal) || 0;
+        if (tx.jenisPos === "pengeluaran") {
+          totalPengeluaran += nom;
+          if (tx.tanggal === today) pengeluaranHariIni += nom;
+        } else if (tx.jenisPos === "kas_ibu") {
+          totalKasIbu += nom;
+        } else if (tx.jenisPos === "nabung") {
+          totalNabung += nom;
+        }
+
+        const key = `${tx.jenisPos}:${tx.kategori}`;
+        rekapKategori[key] = (rekapKategori[key] || 0) + nom;
+      }
+
+      const modalAwal = Number(state.modalAwal) || 0;
+      const jumlahHari = Math.max(1, Number(state.jumlahHari) || 1);
+      const budgetHarian = Math.round(modalAwal / jumlahHari);
+      const sisaSaldo = modalAwal - totalPengeluaran - totalKasIbu - totalNabung;
+
+      return {
+        today,
+        modalAwal,
+        jumlahHari,
+        budgetHarian,
+        totalPengeluaran,
+        totalKasIbu,
+        totalNabung,
+        pengeluaranHariIni,
+        sisaSaldo,
+        rekapKategori
+      };
+    }
+
+    function renderNotif(m) {
+      const bar = document.getElementById("notifBar");
+      bar.innerHTML = "";
+      if (state.dismissedNotifDate === m.today) return;
+
+      const hour = new Date().getHours();
+      const ratio = m.budgetHarian > 0 ? m.pengeluaranHariIni / m.budgetHarian : 0;
+
+      let notif = null;
+      if (m.budgetHarian > 0 && m.pengeluaranHariIni > m.budgetHarian) {
+        const selisih = m.pengeluaranHariIni - m.budgetHarian;
+        notif = {
+          cls: "notif-danger",
+          text: `Lewat batas harian! Terpakai ${formatRupiah(m.pengeluaranHariIni)} dari jatah ${formatRupiah(m.budgetHarian)} (kelebihan ${formatRupiah(selisih)}).`
+        };
+      } else if (m.budgetHarian > 0 && ratio >= 0.8) {
+        notif = {
+          cls: "notif-warn",
+          text: `Mau nyentuh batas harian (${Math.round(ratio * 100)}%)! Sudah terpakai ${formatRupiah(m.pengeluaranHariIni)} dari ${formatRupiah(m.budgetHarian)}.`
+        };
+      } else if (m.pengeluaranHariIni === 0 && hour >= 18) {
+        notif = {
+          cls: "notif-info",
+          text: `Menjelang ganti hari, pengeluaran hari ini masih Rp0. Sudah ada catatan harian belum?`
+        };
+      }
+
+      if (notif) {
         const div = document.createElement("div");
-        div.className = "tx-item";
+        div.className = `notif-card ${notif.cls}`;
         div.innerHTML = `
-          <div>
-            <div class="tx-title">${escapeHtml(it.category || "Umum")} ${it.note ? "- " + escapeHtml(it.note) : ""}</div>
-            <div class="tx-meta">${escapeHtml(it.date || "")}</div>
-          </div>
-          <div style="display:flex;align-items:center;gap:8px;">
-            <span class="${it.type === "income" ? "plus" : "minus"}">${it.type === "income" ? "+" : "-"}${fmt(amt)}</span>
-            <button type="button" class="del-btn" data-idx="${idx}">Hapus</button>
+          <div>${notif.text}</div>
+          <button class="notif-close" onclick="dismissNotif('${m.today}')" title="Tutup">✕</button>
+        `;
+        bar.appendChild(div);
+      }
+    }
+
+    function dismissNotif(day) {
+      state.dismissedNotifDate = day;
+      saveState();
+      renderAll();
+    }
+
+    function renderChat(m) {
+      const container = document.getElementById("chatScroll");
+      container.innerHTML = "";
+
+      const welcome = document.createElement("div");
+      welcome.className = "bubble-row in";
+      welcome.innerHTML = `
+        <div class="bubble">
+          Halo Bestie! Ketik aja catatan uangmu kayak chat biasa, contoh: <b>bensin 10rb</b>, <b>jajan 15000</b>, atau <b>nabung 20rb</b>.
+          <div class="time-stamp">Info</div>
+        </div>
+      `;
+      container.appendChild(welcome);
+
+      let lastDate = "";
+      for (const tx of state.transactions) {
+        if (tx.tanggal !== lastDate) {
+          lastDate = tx.tanggal;
+          const dChip = document.createElement("div");
+          dChip.className = "date-chip";
+          dChip.textContent = tx.tanggal === m.today ? `Hari Ini (${tx.tanggal})` : tx.tanggal;
+          container.appendChild(dChip);
+        }
+
+        const isNeg = tx.jenisPos === "pengeluaran" || tx.jenisPos === "kas_ibu";
+        const signPrefix = isNeg ? "-" : "+";
+        const row = document.createElement("div");
+        row.className = "bubble-row out";
+        row.innerHTML = `
+          <div class="bubble">
+            <div>"${escapeHtml(tx.rawText || tx.keterangan)}"</div>
+            <div class="tx-amount ${isNeg ? "amt-neg" : "amt-pos"}">${signPrefix}${formatRupiah(tx.nominal)}</div>
+            <div class="tx-meta">
+              <span class="tag tag-${tx.jenisPos}">${posLabel(tx.jenisPos)}</span>
+              <span>• ${escapeHtml(tx.kategori)}</span>
+              <span>• ${escapeHtml(tx.keterangan)}</span>
+            </div>
+            <div class="bubble-actions">
+              <button class="mini-btn" onclick="editTx('${tx.id}')">Edit</button>
+              <button class="mini-btn del" onclick="deleteTx('${tx.id}')">Hapus</button>
+            </div>
+            <div class="time-stamp">${tx.jam || ""}</div>
           </div>
         `;
-        listEl.appendChild(div);
-      });
+        container.appendChild(row);
+      }
 
-      document.getElementById("totalIn").textContent = fmt(inc);
-      document.getElementById("totalOut").textContent = fmt(exp);
-      const balEl = document.getElementById("balance");
-      balEl.textContent = fmt(inc - exp);
-      balEl.style.color = (inc - exp) < 0 ? "var(--danger)" : "var(--text)";
+      container.scrollTop = container.scrollHeight;
+    }
 
-      document.querySelectorAll(".del-btn").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          items.splice(Number(btn.dataset.idx), 1);
-          saveAndRender();
-        });
-      });
+    function posLabel(pos) {
+      if (pos === "kas_ibu") return "Kas / Ibu";
+      if (pos === "nabung") return "Nabung";
+      return "Pengeluaran";
     }
 
     function escapeHtml(str) {
-      return String(str).replace(/[&<>"']/g, (m) => ({
-        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
-      }[m]));
+      return String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
     }
 
-    document.getElementById("txForm").addEventListener("submit", (e) => {
+    function renderAll() {
+      const m = computeMetrics();
+      document.getElementById("sumSisa").textContent = formatRupiah(m.sisaSaldo);
+      document.getElementById("sumHarian").textContent = formatRupiah(m.budgetHarian);
+      document.getElementById("sumKas").textContent = formatRupiah(m.totalKasIbu);
+      document.getElementById("sumNabung").textContent = formatRupiah(m.totalNabung);
+
+      const modeText = navigator.onLine && state.aiEndpoint && state.aiKey
+        ? "Hybrid AI + Offline aktif"
+        : "Offline cepat aktif";
+      document.getElementById("subStatus").textContent =
+        `Hari ini: ${formatRupiah(m.pengeluaranHariIni)} / ${formatRupiah(m.budgetHarian)} • ${modeText}`;
+
+      renderNotif(m);
+      renderChat(m);
+    }
+
+    async function handleSend(e) {
       e.preventDefault();
-      items.unshift({
-        type: document.getElementById("type").value,
-        amount: Number(document.getElementById("amount").value),
-        category: document.getElementById("category").value.trim() || "Umum",
-        date: document.getElementById("date").value,
-        note: document.getElementById("note").value.trim()
+      const input = document.getElementById("msgInput");
+      const posSel = document.getElementById("posSelect");
+      const raw = input.value.trim();
+      if (!raw) return;
+
+      const nominal = parseNominal(raw);
+      if (!nominal) {
+        alert("Tulis nominalnya juga ya, contoh: bensin 10rb atau jajan 15000");
+        return;
+      }
+
+      const detected = detectPosAndKategori(raw, posSel.value);
+      const fallback = { ...detected, nominal };
+      const finalParsed = await tryOnlineAIParse(raw, fallback);
+
+      state.dismissedNotifDate = "";
+      state.transactions.push({
+        id: "tx-" + Date.now() + "-" + Math.random().toString(36).slice(2, 6),
+        tanggal: todayStr(),
+        jam: nowTimeStr(),
+        jenisPos: finalParsed.jenisPos,
+        kategori: finalParsed.kategori,
+        keterangan: finalParsed.keterangan,
+        nominal: finalParsed.nominal,
+        rawText: raw
       });
-      document.getElementById("amount").value = "";
-      document.getElementById("note").value = "";
-      saveAndRender();
-    });
 
-    document.getElementById("jsonFile").addEventListener("change", (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = () => {
-        try {
-          const parsed = JSON.parse(reader.result);
-          const arr = Array.isArray(parsed)
-            ? parsed
-            : Array.isArray(parsed.transactions)
-              ? parsed.transactions
-              : Array.isArray(parsed.data)
-                ? parsed.data
-                : [];
-          if (!arr.length) {
-            alert("Format JSON terbaca, tapi daftar transaksi tidak ditemukan.");
-            return;
-          }
-          const normalized = arr.map((x) => ({
-            type: x.type === "income" || x.jenis === "pemasukan" ? "income" : "expense",
-            amount: Number(x.amount ?? x.nominal ?? 0),
-            category: x.category ?? x.kategori ?? "Impor",
-            date: x.date ?? x.tanggal ?? new Date().toISOString().slice(0, 10),
-            note: x.note ?? x.keterangan ?? ""
-          }));
-          items = normalized.concat(items);
-          saveAndRender();
-          alert("Berhasil mengimpor " + normalized.length + " data!");
-        } catch (err) {
-          alert("File JSON tidak valid.");
+      saveState();
+      input.value = "";
+      renderAll();
+    }
+
+    function quickFill(text, pos) {
+      document.getElementById("posSelect").value = pos;
+      const input = document.getElementById("msgInput");
+      input.value = text;
+      input.focus();
+    }
+
+    function deleteTx(id) {
+      state.transactions = state.transactions.filter((t) => t.id !== id);
+      saveState();
+      renderAll();
+    }
+
+    function editTx(id) {
+      const tx = state.transactions.find((t) => t.id === id);
+      if (!tx) return;
+      const baruNominal = prompt("Nominal baru (angka):", tx.nominal);
+      if (baruNominal === null) return;
+      const cleanNum = parseNominal(baruNominal);
+      if (!cleanNum) {
+        alert("Nominal tidak valid.");
+        return;
+      }
+      const baruKet = prompt("Keterangan / kategori:", tx.keterangan);
+      if (baruKet !== null && baruKet.trim() !== "") {
+        tx.keterangan = baruKet.trim();
+      }
+      tx.nominal = cleanNum;
+      saveState();
+      renderAll();
+    }
+
+    function openModal(type) {
+      const m = computeMetrics();
+      const sheet = document.getElementById("modalSheet");
+      if (type === "budget") {
+        sheet.innerHTML = `
+          <div class="modal-head">
+            <h3>Atur Modal & Budget Multi-Hari</h3>
+            <button class="mini-btn" onclick="closeModal()">Tutup</button>
+          </div>
+          <div class="field">
+            <label>Total Modal / Pemasukan Periode (Rp)</label>
+            <input type="number" id="inpModal" value="${state.modalAwal}" min="0" step="1000" />
+          </div>
+          <div class="field">
+            <label>Jumlah Hari</label>
+            <input type="number" id="inpHari" value="${state.jumlahHari}" min="1" max="365" />
+          </div>
+          <div class="rekap-box">
+            Estimasi jatah harian: <b id="previewHarian">${formatRupiah(m.budgetHarian)}</b> / hari
+          </div>
+          <hr style="border:none;border-top:1px solid #e2e8f0;margin:12px 0;" />
+          <div class="field">
+            <label>Opsional AI Endpoint (kosongkan jika pakai mode Offline saja)</label>
+            <input type="text" id="inpAiUrl" value="${escapeHtml(state.aiEndpoint)}" placeholder="https://api.openai.com/v1/chat/completions" />
+          </div>
+          <div class="field">
+            <label>Opsional AI API Key</label>
+            <input type="password" id="inpAiKey" value="${escapeHtml(state.aiKey)}" placeholder="sk-..." />
+          </div>
+          <div class="btn-row">
+            <button class="btn-primary" onclick="saveBudgetSettings()">Simpan Pengaturan</button>
+          </div>
+        `;
+        const inpM = document.getElementById("inpModal");
+        const inpH = document.getElementById("inpHari");
+        const updatePrev = () => {
+          const mv = Number(inpM.value) || 0;
+          const hv = Math.max(1, Number(inpH.value) || 1);
+          document.getElementById("previewHarian").textContent = formatRupiah(Math.round(mv / hv));
+        };
+        inpM.addEventListener("input", updatePrev);
+        inpH.addEventListener("input", updatePrev);
+      } else if (type === "rekap") {
+        const lines = Object.entries(m.rekapKategori)
+          .map(([k, v]) => `<div class="rekap-line"><span>${escapeHtml(k.replace(":", " • "))}</span><b>${formatRupiah(v)}</b></div>`)
+          .join("") || `<div class="rekap-line"><span>Belum ada transaksi</span><b>Rp0</b></div>`;
+
+        sheet.innerHTML = `
+          <div class="modal-head">
+            <h3>Rekap Keuangan</h3>
+            <button class="mini-btn" onclick="closeModal()">Tutup</button>
+          </div>
+          <div class="rekap-box">
+            <div class="rekap-line"><span>Modal Awal</span><b>${formatRupiah(m.modalAwal)}</b></div>
+            <div class="rekap-line"><span>Total Pengeluaran</span><b>-${formatRupiah(m.totalPengeluaran)}</b></div>
+            <div class="rekap-line"><span>Total Kas / Ibu</span><b>-${formatRupiah(m.totalKasIbu)}</b></div>
+            <div class="rekap-line"><span>Total Nabung</span><b>+${formatRupiah(m.totalNabung)}</b></div>
+            <div class="rekap-line"><span>Sisa Saldo</span><b>${formatRupiah(m.sisaSaldo)}</b></div>
+          </div>
+          <div class="rekap-box">
+            <div style="font-weight:700;margin-bottom:6px;">Rincian per Pos & Kategori</div>
+            ${lines}
+          </div>
+        `;
+      } else if (type === "data") {
+        const jsonStr = JSON.stringify(state, null, 2);
+        sheet.innerHTML = `
+          <div class="modal-head">
+            <h3>Backup & Restore (JSON)</h3>
+            <button class="mini-btn" onclick="closeModal()">Tutup</button>
+          </div>
+          <div class="field">
+            <label>Salin untuk backup atau tempel JSON lama untuk restore</label>
+            <textarea id="jsonArea" rows="8">${escapeHtml(jsonStr)}</textarea>
+          </div>
+          <div class="btn-row">
+            <button class="btn-sec" onclick="copyJson()">Salin JSON</button>
+            <button class="btn-primary" onclick="importJson()">Impor JSON</button>
+            <button class="btn-sec" style="color:#b91c1c;" onclick="resetAllData()">Reset Data</button>
+          </div>
+        `;
+      }
+      document.getElementById("modalBackdrop").classList.add("open");
+    }
+
+    function closeModal() {
+      document.getElementById("modalBackdrop").classList.remove("open");
+    }
+
+    function closeModalBackdrop(e) {
+      if (e.target.id === "modalBackdrop") closeModal();
+    }
+
+    function saveBudgetSettings() {
+      const mVal = Number(document.getElementById("inpModal").value) || 0;
+      const hVal = Math.max(1, Number(document.getElementById("inpHari").value) || 1);
+      state.modalAwal = mVal;
+      state.jumlahHari = hVal;
+      state.aiEndpoint = document.getElementById("inpAiUrl").value.trim();
+      state.aiKey = document.getElementById("inpAiKey").value.trim();
+      state.dismissedNotifDate = "";
+      saveState();
+      closeModal();
+      renderAll();
+    }
+
+    function copyJson() {
+      const ta = document.getElementById("jsonArea");
+      ta.select();
+      document.execCommand("copy");
+      alert("JSON berhasil disalin!");
+    }
+
+    function importJson() {
+      try {
+        const raw = document.getElementById("jsonArea").value;
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed.transactions)) {
+          alert("Format JSON tidak sesuai (butuh array transactions).");
+          return;
         }
-      };
-      reader.readAsText(file);
-    });
+        state = { ...defaultState(), ...parsed };
+        saveState();
+        closeModal();
+        renderAll();
+        alert("Data berhasil diimpor!");
+      } catch (e) {
+        alert("JSON tidak valid: " + e.message);
+      }
+    }
 
-    document.getElementById("exportBtn").addEventListener("click", () => {
-      const blob = new Blob([JSON.stringify(items, null, 2)], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "bestie-budget-backup.json";
-      a.click();
-      URL.revokeObjectURL(url);
-    });
+    function resetAllData() {
+      if (!confirm("Yakin hapus semua transaksi dan reset pengaturan?")) return;
+      state = defaultState();
+      saveState();
+      closeModal();
+      renderAll();
+    }
 
-    render();
+    renderAll();
   </script>
 </body>
 </html>
-
