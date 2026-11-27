@@ -1,0 +1,304 @@
+{
+    "ewallet": 113000,
+    "cash": 0,
+    "budget": 230000,
+    "notif_enabled": true,
+    "sound_enabled": true,
+    "reminder_hour": 23,
+    "reminder_minute": 55,
+    "streak_days": 1,
+    "last_active_date": "2026-11-26",
+    "theme": {
+        "wallpaper_preset": "bestie_candy",
+        "custom_wallpaper": "",
+        "font_family": "sans",
+        "font_size": 12,
+        "text_color": "#111b21",
+        "bubble_style": "classic",
+        "user_bubble_bg": "#ede9fe",
+        "bot_bubble_bg": "#ffffff"
+    },
+    "expenses": [
+        {
+            "date": "2026-11-26",
+            "time": "09:08",
+            "amount": 15000,
+            "note": "Jajan"
+        },
+        {
+            "date": "2026-11-26",
+            "time": "09:08",
+            "amount": 220000,
+            "note": "pemasukan ku ya"
+        },
+        {
+            "date": "2026-11-26",
+            "time": "09:40",
+            "amount": 5000,
+            "channel": "cash",
+            "note": "jajan"
+        },
+        {
+            "date": "2026-11-26",
+            "time": "09:40",
+            "amount": 5000,
+            "channel": "cash",
+            "note": "jajan"
+        },
+        {
+            "date": "2026-11-26",
+            "time": "09:43",
+            "amount": 5000,
+            "channel": "cash",
+            "note": "jajan"
+        },
+        {
+            "date": "2026-11-26",
+            "time": "09:43",
+            "amount": 10000,
+            "channel": "cash",
+            "note": "bakso"
+        },
+        {
+            "date": "2026-11-26",
+            "time": "09:47",
+            "amount": 5000,
+            "channel": "cash",
+            "note": "jajan"
+        },
+        {
+            "date": "2026-11-26",
+            "time": "09:47",
+            "amount": 15000,
+            "channel": "ewallet",
+            "note": "kopi"
+        },
+        {
+            "date": "2026-11-26",
+            "time": "09:58",
+            "amount": 2000,
+            "channel": "ewallet",
+            "note": "jajan"
+        },
+        {
+            "date": "2026-11-26",
+            "time": "10:07",
+            "amount": 10000,
+            "channel": "ewallet",
+            "note": "bakso"
+        }
+    ],
+    "chats": [
+        {
+            "sender": "bot",
+            "time": "09:31",
+            "text": "Chat dibersihkan. Yuk mulai catat lagi!"
+        },
+        {
+            "sender": "user",
+            "time": "09:40",
+            "text": "jajan 5rb",
+            "card": null
+        },
+        {
+            "sender": "bot",
+            "time": "09:40",
+            "text": "Tercatat jajan Rp5.000. Udah lewat budget dikit nih, nggak apa-apa\u2014besok kita atur ritmenya lagi ya!",
+            "card": {
+                "badge": "LEWAT BUDGET",
+                "title": "Jajan \u2022 Rp5.000 (Cash)",
+                "lines": [
+                    "Sisa budget hari ini: -Rp10.000",
+                    "E-wallet: Rp120.000 \u2022 Cash: Rp45.000"
+                ]
+            }
+        },
+        {
+            "sender": "user",
+            "time": "09:40",
+            "text": "topup ewallet 20rb dari cash",
+            "card": null
+        },
+        {
+            "sender": "bot",
+            "time": "09:40",
+            "text": "Dompet dipindah (Cash \u2192 E-Wallet) sebesar Rp20.000. Ini cuma pindah pos, bukan boros ya \ud83d\ude09",
+            "card": {
+                "badge": "PINDAH DOMPET",
+                "title": "Cash \u2192 E-Wallet \u2022 Rp20.000",
+                "lines": [
+                    "E-wallet: Rp140.000 \u2022 Cash: Rp25.000",
+                    "Sisa budget hari ini tetap: -Rp10.000"
+                ]
+            }
+        },
+        {
+            "sender": "user",
+            "time": "09:40",
+            "text": "jajan 5rb",
+            "card": null
+        },
+        {
+            "sender": "bot",
+            "time": "09:40",
+            "text": "Tercatat jajan Rp5.000. Udah lewat budget dikit nih, nggak apa-apa\u2014besok kita atur ritmenya lagi ya!",
+            "card": {
+                "badge": "LEWAT BUDGET",
+                "title": "Jajan \u2022 Rp5.000 (Cash)",
+                "lines": [
+                    "Sisa budget hari ini: -Rp15.000",
+                    "E-wallet: Rp140.000 \u2022 Cash: Rp20.000"
+                ]
+            }
+        },
+        {
+            "sender": "user",
+            "time": "09:43",
+            "text": "jajan 5rb",
+            "card": null
+        },
+        {
+            "sender": "bot",
+            "time": "09:43",
+            "text": "Tercatat jajan Rp5.000. Udah lewat budget dikit nih, nggak apa-apa\u2014besok kita atur ritmenya lagi ya!",
+            "card": {
+                "badge": "LEWAT BUDGET",
+                "title": "Jajan \u2022 Rp5.000 (Cash)",
+                "lines": [
+                    "Sisa budget hari ini: -Rp20.000",
+                    "E-wallet: Rp140.000 \u2022 Cash: Rp15.000"
+                ]
+            }
+        },
+        {
+            "sender": "user",
+            "time": "09:43",
+            "text": "jajan bakso 10ribu",
+            "card": null
+        },
+        {
+            "sender": "bot",
+            "time": "09:43",
+            "text": "Tercatat bakso Rp10.000. Udah lewat budget dikit nih, nggak apa-apa\u2014besok kita atur ritmenya lagi ya!",
+            "card": {
+                "badge": "LEWAT BUDGET",
+                "title": "Bakso \u2022 Rp10.000 (Cash)",
+                "lines": [
+                    "Sisa budget hari ini: -Rp30.000",
+                    "E-wallet: Rp140.000 \u2022 Cash: Rp5.000"
+                ]
+            }
+        },
+        {
+            "sender": "user",
+            "time": "09:47",
+            "text": "jajan 5rb",
+            "card": null
+        },
+        {
+            "sender": "bot",
+            "time": "09:47",
+            "text": "Tercatat jajan Rp5.000. Wah, budget hari ini udah lewat Rp35.000\u2014wajib ngerem dulu ya bestie, aku tetap dukung biar besok lebih rapi!",
+            "card": {
+                "badge": "JEBOl BUDGET",
+                "title": "Jajan \u2022 Rp5.000 (Cash)",
+                "lines": [
+                    "Terpakai hari ini: Rp265.000 \u2022 Sisa budget: -Rp35.000",
+                    "Uang riil \u2014 E-wallet: Rp140.000 \u2022 Cash: Rp0"
+                ]
+            }
+        },
+        {
+            "sender": "user",
+            "time": "09:47",
+            "text": "kopi 15 ribu",
+            "card": null
+        },
+        {
+            "sender": "bot",
+            "time": "09:47",
+            "text": "Tercatat kopi Rp15.000. Wah, budget hari ini udah lewat Rp50.000\u2014wajib ngerem dulu ya bestie, aku tetap dukung biar besok lebih rapi!",
+            "card": {
+                "badge": "JEBOl BUDGET",
+                "title": "Kopi \u2022 Rp15.000 (E-Wallet)",
+                "lines": [
+                    "Terpakai hari ini: Rp280.000 \u2022 Sisa budget: -Rp50.000",
+                    "Uang riil \u2014 E-wallet: Rp125.000 \u2022 Cash: Rp0"
+                ]
+            }
+        },
+        {
+            "sender": "user",
+            "time": "09:58",
+            "text": "jajan 2 rb",
+            "card": null
+        },
+        {
+            "sender": "bot",
+            "time": "09:58",
+            "text": "Tercatat jajan Rp2.000. Wah, budget hari ini udah lewat Rp52.000\u2014wajib ngerem dulu ya bestie, aku tetap dukung biar besok lebih rapi!",
+            "card": {
+                "badge": "JEBOL BUDGET",
+                "title": "Jajan \u2022 Rp2.000 (E-Wallet)",
+                "lines": [
+                    "Budget: Rp230.000 \u2022 Sisa hari ini: -Rp52.000",
+                    "E-wallet: Rp123.000 \u2022 Cash: Rp0"
+                ]
+            }
+        },
+        {
+            "sender": "user",
+            "time": "10:07",
+            "text": "jajan bakso 10ribu",
+            "card": null
+        },
+        {
+            "sender": "bot",
+            "time": "10:07",
+            "text": "Tercatat bakso Rp10.000. Wah, budget hari ini udah lewat Rp62.000\u2014wajib ngerem dulu ya bestie, aku tetap dukung biar besok lebih rapi!",
+            "card": {
+                "badge": "JEBOL BUDGET",
+                "title": "Bakso \u2022 Rp10.000 (E-Wallet)",
+                "lines": [
+                    "Budget: Rp230.000 \u2022 Sisa hari ini: -Rp62.000",
+                    "E-wallet: Rp113.000 \u2022 Cash: Rp0"
+                ]
+            }
+        },
+        {
+            "sender": "user",
+            "time": "10:07",
+            "text": "jajan bakso 10ribu",
+            "card": null
+        },
+        {
+            "sender": "bot",
+            "time": "10:07",
+            "text": "Tercatat bakso Rp10.000. Wah, budget hari ini udah lewat Rp72.000\u2014wajib ngerem dulu ya bestie, aku tetap dukung biar besok lebih rapi!",
+            "card": {
+                "badge": "JEBOL BUDGET",
+                "title": "Bakso \u2022 Rp10.000 (E-Wallet)",
+                "lines": [
+                    "Budget: Rp230.000 \u2022 Sisa hari ini: -Rp72.000",
+                    "E-wallet: Rp103.000 \u2022 Cash: Rp0"
+                ]
+            }
+        },
+        {
+            "sender": "bot",
+            "time": "10:15",
+            "text": "Aman, transaksi terakhir (bakso Rp10.000) sudah dibatalkan!",
+            "card": {
+                "badge": "DIBATALKAN",
+                "title": "Saldo E-Wallet dikembalikan +Rp10.000",
+                "lines": [
+                    "Budget: Rp230.000 \u2022 Sisa hari ini: -Rp62.000",
+                    "E-wallet: Rp113.000 \u2022 Cash: Rp0"
+                ]
+            }
+        }
+    ],
+    "last_day_notif_date": "2026-11-26",
+    "balance": 120000,
+    "last_day_reminded": ""
+}
