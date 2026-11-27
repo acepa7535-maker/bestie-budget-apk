@@ -1,1 +1,287 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bestie Budget</title>
+  <style>
+    :root {
+      --bg: #fff7fa;
+      --card: #ffffff;
+      --primary: #e85d9a;
+      --primary-dark: #c9437e;
+      --text: #2a2229;
+      --muted: #7a6b77;
+      --border: #f2dce6;
+      --ok: #1f9d68;
+      --warn: #d97706;
+      --danger: #dc2626;
+    }
+    * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      padding-bottom: 40px;
+    }
+    header {
+      background: linear-gradient(135deg, var(--primary), #ff8fb8);
+      color: #fff;
+      padding: 18px 16px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    header h1 { margin: 0; font-size: 1.25rem; }
+    header p { margin: 4px 0 0; font-size: 0.85rem; opacity: 0.95; }
+    .container { max-width: 720px; margin: 0 auto; padding: 14px; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 14px;
+      box-shadow: 0 2px 8px rgba(232, 93, 154, 0.06);
+    }
+    .stat-label { font-size: 0.78rem; color: var(--muted); }
+    .stat-val { font-size: 1rem; font-weight: 700; margin-top: 4px; }
+    h2 { font-size: 1rem; margin: 0 0 10px; }
+    label { display: block; font-size: 0.85rem; color: var(--muted); margin-top: 8px; margin-bottom: 4px; }
+    input, select, button {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      font-size: 0.95rem;
+    }
+    input, select { background: #fff; color: var(--text); }
+    button {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 12px;
+    }
+    button:hover { background: var(--primary-dark); }
+    button.secondary { background: #fce7f0; color: var(--primary-dark); }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .tx-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      gap: 8px;
+    }
+    .tx-item:last-child { border-bottom: none; }
+    .tx-title { font-weight: 600; font-size: 0.92rem; }
+    .tx-meta { font-size: 0.78rem; color: var(--muted); }
+    .plus { color: var(--ok); font-weight: 700; }
+    .minus { color: var(--danger); font-weight: 700; }
+    .del-btn {
+      width: auto;
+      padding: 6px 10px;
+      margin: 0;
+      font-size: 0.78rem;
+      background: #fee2e2;
+      color: var(--danger);
+    }
+    .note { font-size: 0.8rem; color: var(--muted); margin-top: 8px; line-height: 1.4; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Bestie Budget</h1>
+    <p>Catat keuangan offline di HP &amp; impor data.json lama</p>
+  </header>
+
+  <div class="container">
+    <div class="grid">
+      <div class="card" style="margin:0;">
+        <div class="stat-label">Pemasukan</div>
+        <div class="stat-val plus" id="totalIn">Rp0</div>
+      </div>
+      <div class="card" style="margin:0;">
+        <div class="stat-label">Pengeluaran</div>
+        <div class="stat-val minus" id="totalOut">Rp0</div>
+      </div>
+      <div class="card" style="margin:0;">
+        <div class="stat-label">Sisa Saldo</div>
+        <div class="stat-val" id="balance">Rp0</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Tambah Catatan</h2>
+      <form id="txForm">
+        <div class="row">
+          <div>
+            <label for="type">Jenis</label>
+            <select id="type">
+              <option value="expense">Pengeluaran</option>
+              <option value="income">Pemasukan</option>
+            </select>
+          </div>
+          <div>
+            <label for="amount">Nominal (Rp)</label>
+            <input id="amount" type="number" min="1" placeholder="Contoh: 15000" required />
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label for="category">Kategori</label>
+            <input id="category" type="text" placeholder="Jajan, Transport, dll" />
+          </div>
+          <div>
+            <label for="date">Tanggal</label>
+            <input id="date" type="date" required />
+          </div>
+        </div>
+        <label for="note">Keterangan</label>
+        <input id="note" type="text" placeholder="Catatan singkat..." />
+        <button type="submit">Simpan ke HP</button>
+      </form>
+    </div>
+
+    <div class="card">
+      <h2>Riwayat Transaksi</h2>
+      <div id="txList"></div>
+    </div>
+
+    <div class="card">
+      <h2>Impor / Ekspor Data (data.json)</h2>
+      <label for="jsonFile">Pilih file data.json dari backup</label>
+      <input id="jsonFile" type="file" accept=".json,application/json" />
+      <button type="button" class="secondary" id="exportBtn">Unduh Cadangan JSON</button>
+      <p class="note">Data tersimpan otomatis di memori browser HP (<code>localStorage</code>) sehingga tetap jalan tanpa internet maupun server PHP.</p>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "bestie_budget_items_v1";
+    let items = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+
+    const fmt = (n) => "Rp" + Number(n || 0).toLocaleString("id-ID");
+    const dateInput = document.getElementById("date");
+    dateInput.value = new Date().toISOString().slice(0, 10);
+
+    function saveAndRender() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+      render();
+    }
+
+    function render() {
+      let inc = 0, exp = 0;
+      const listEl = document.getElementById("txList");
+      listEl.innerHTML = "";
+
+      if (!items.length) {
+        listEl.innerHTML = '<p class="note">Belum ada transaksi tercatat.</p>';
+      }
+
+      items.forEach((it, idx) => {
+        const amt = Number(it.amount) || 0;
+        if (it.type === "income") inc += amt;
+        else exp += amt;
+
+        const div = document.createElement("div");
+        div.className = "tx-item";
+        div.innerHTML = `
+          <div>
+            <div class="tx-title">${escapeHtml(it.category || "Umum")} ${it.note ? "- " + escapeHtml(it.note) : ""}</div>
+            <div class="tx-meta">${escapeHtml(it.date || "")}</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span class="${it.type === "income" ? "plus" : "minus"}">${it.type === "income" ? "+" : "-"}${fmt(amt)}</span>
+            <button type="button" class="del-btn" data-idx="${idx}">Hapus</button>
+          </div>
+        `;
+        listEl.appendChild(div);
+      });
+
+      document.getElementById("totalIn").textContent = fmt(inc);
+      document.getElementById("totalOut").textContent = fmt(exp);
+      const balEl = document.getElementById("balance");
+      balEl.textContent = fmt(inc - exp);
+      balEl.style.color = (inc - exp) < 0 ? "var(--danger)" : "var(--text)";
+
+      document.querySelectorAll(".del-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          items.splice(Number(btn.dataset.idx), 1);
+          saveAndRender();
+        });
+      });
+    }
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, (m) => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      }[m]));
+    }
+
+    document.getElementById("txForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      items.unshift({
+        type: document.getElementById("type").value,
+        amount: Number(document.getElementById("amount").value),
+        category: document.getElementById("category").value.trim() || "Umum",
+        date: document.getElementById("date").value,
+        note: document.getElementById("note").value.trim()
+      });
+      document.getElementById("amount").value = "";
+      document.getElementById("note").value = "";
+      saveAndRender();
+    });
+
+    document.getElementById("jsonFile").addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const parsed = JSON.parse(reader.result);
+          const arr = Array.isArray(parsed)
+            ? parsed
+            : Array.isArray(parsed.transactions)
+              ? parsed.transactions
+              : Array.isArray(parsed.data)
+                ? parsed.data
+                : [];
+          if (!arr.length) {
+            alert("Format JSON terbaca, tapi daftar transaksi tidak ditemukan.");
+            return;
+          }
+          const normalized = arr.map((x) => ({
+            type: x.type === "income" || x.jenis === "pemasukan" ? "income" : "expense",
+            amount: Number(x.amount ?? x.nominal ?? 0),
+            category: x.category ?? x.kategori ?? "Impor",
+            date: x.date ?? x.tanggal ?? new Date().toISOString().slice(0, 10),
+            note: x.note ?? x.keterangan ?? ""
+          }));
+          items = normalized.concat(items);
+          saveAndRender();
+          alert("Berhasil mengimpor " + normalized.length + " data!");
+        } catch (err) {
+          alert("File JSON tidak valid.");
+        }
+      };
+      reader.readAsText(file);
+    });
+
+    document.getElementById("exportBtn").addEventListener("click", () => {
+      const blob = new Blob([JSON.stringify(items, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "bestie-budget-backup.json";
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    render();
+  </script>
+</body>
+</html>
 
