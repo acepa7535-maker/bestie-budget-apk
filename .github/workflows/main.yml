@@ -37,7 +37,7 @@ jobs:
             rm cmdline-tools.zip
           fi
           yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --sdk_root="$ANDROID_SDK_ROOT" --licenses > /dev/null
-          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --sdk_root="$ANDROID_SDK_ROOT" "platform-tools" "platforms;android-34" "platforms;android-35" "build-tools;34.0.0" "build-tools;35.0.0"
+          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --sdk_root="$ANDROID_SDK_ROOT" "platform-tools" "platforms;android-34" "platforms;android-35" "platforms;android-36" "build-tools;34.0.0" "build-tools;35.0.0"
           echo "ANDROID_HOME=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
           echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
           echo "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools" >> $GITHUB_PATH
@@ -65,8 +65,27 @@ jobs:
           npx cap add android
           npx cap copy android
 
-      - name: Build Debug APK
+      - name: Fix Kotlin stdlib conflict & Build Debug APK
         run: |
+          python3 -c '
+          p = "android/build.gradle"
+          with open(p, "r") as f:
+              c = f.read()
+          rule = """
+allprojects {
+    configurations.all {
+        resolutionStrategy.eachDependency { details ->
+            if (details.requested.group == "org.jetbrains.kotlin" && details.requested.name.startsWith("kotlin-stdlib")) {
+                details.useVersion "1.8.22"
+            }
+        }
+    }
+}
+"""
+          if "resolutionStrategy.eachDependency" not in c:
+              with open(p, "w") as f:
+                  f.write(c + "\n" + rule)
+          '
           cd android
           chmod +x gradlew
           ./gradlew assembleDebug
